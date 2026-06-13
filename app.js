@@ -270,11 +270,16 @@ function initPlatformTabs() {
 
       const platform = button.dataset.platform;
       switcher.querySelectorAll("[data-platform]").forEach((item) => {
-        item.classList.toggle("is-active", item === button);
+        const isActive = item === button;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-selected", String(isActive));
+        item.tabIndex = isActive ? 0 : -1;
       });
 
       document.querySelectorAll("[data-platform-pane]").forEach((pane) => {
-        pane.classList.toggle("is-active", pane.dataset.platformPane === platform);
+        const isActive = pane.dataset.platformPane === platform;
+        pane.classList.toggle("is-active", isActive);
+        pane.hidden = !isActive;
       });
     });
   });

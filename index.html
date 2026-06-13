@@ -7,7 +7,7 @@
     <title>Mer3y Sense</title>
     <meta name="description" content="Mer3y Sense，AI 开发工具统一接入平台。" />
     <link rel="icon" type="image/svg+xml" href="./assets/Mer3ylogo.svg" />
-    <link rel="stylesheet" href="./styles.css?v=20260613-click-fix" />
+    <link rel="stylesheet" href="./styles.css?v=20260613-image-fix" />
   </head>
   <body data-current="home">
     <div class="paper-texture" aria-hidden="true"></div>
@@ -15,13 +15,13 @@
       <div class="aether-symbol-layer">
         <span class="logo-ripple ripple-one"></span>
         <span class="logo-ripple ripple-two"></span>
-        <span class="logo-fill"></span>
+        <img class="logo-fill" src="./assets/Mer3ylogo.svg" alt="" aria-hidden="true" />
       </div>
     </div>
     <header class="site-header">
       <div class="header-inner">
         <a class="brand" href="#home" aria-label="Mer3y 首页">
-          <span class="brand-mark"></span>
+          <img class="brand-mark" src="./assets/Mer3ylogo.svg" alt="" aria-hidden="true" />
           <span>
             <strong>Mer3y</strong>
             <small>Mer3y Sense</small>
@@ -36,7 +36,7 @@
           <a href="#features" data-nav="features">更多</a>
         </nav>
 
-        <a class="login-link" href="https://api.aisz.mom/login" target="_blank" rel="noreferrer">
+        <a class="login-link" href="https://meta.mer3y.xyz/" target="_blank" rel="noopener noreferrer">
           登录
         </a>
       </div>
@@ -79,18 +79,18 @@
 
           <div class="code-stack">
             <div class="model-emblem claude-emblem" data-logo-stage="claude" aria-hidden="true">
-              <span class="emblem-ripple r-one"></span>
-              <span class="emblem-ripple r-two"></span>
-              <span class="emblem-ripple r-three"></span>
+              <img class="emblem-ripple r-one" src="./assets/claude.svg" alt="" aria-hidden="true" />
+              <img class="emblem-ripple r-two" src="./assets/claude.svg" alt="" aria-hidden="true" />
+              <img class="emblem-ripple r-three" src="./assets/claude.svg" alt="" aria-hidden="true" />
               <span class="emblem-core">
-                <span class="emblem-symbol"></span>
+                <img class="emblem-symbol" src="./assets/claude.svg" alt="" aria-hidden="true" />
               </span>
             </div>
             <div class="stack-cards">
               <div class="switcher" role="tablist" aria-label="Claude 安装方式">
-                <button class="is-active" type="button" data-platform="powershell">PowerShell</button>
-                <button type="button" data-platform="node">Node.js</button>
-                <button type="button" data-platform="homebrew">Homebrew</button>
+                <button class="is-active" id="tab-powershell" type="button" role="tab" aria-selected="true" aria-controls="pane-powershell" data-platform="powershell">PowerShell</button>
+                <button id="tab-node" type="button" role="tab" aria-selected="false" aria-controls="pane-node" tabindex="-1" data-platform="node">Node.js</button>
+                <button id="tab-homebrew" type="button" role="tab" aria-selected="false" aria-controls="pane-homebrew" tabindex="-1" data-platform="homebrew">Homebrew</button>
               </div>
 
               <article class="code-window claude-code">
@@ -98,9 +98,9 @@
                   <span>install</span>
                   <button type="button" data-copy-target="active-claude">复制</button>
                 </div>
-                <pre class="code-pane is-active" data-platform-pane="powershell"><code>irm https://metapi.mer3y.xyz/install.ps1 | iex</code></pre>
-                <pre class="code-pane" data-platform-pane="node"><code>npm install -g @anthropic-ai/claude-code</code></pre>
-                <pre class="code-pane" data-platform-pane="homebrew"><code>brew install claude-code</code></pre>
+                <pre class="code-pane is-active" id="pane-powershell" role="tabpanel" aria-labelledby="tab-powershell" data-platform-pane="powershell"><code>irm https://metapi.mer3y.xyz/install.ps1 | iex</code></pre>
+                <pre class="code-pane" id="pane-node" role="tabpanel" aria-labelledby="tab-node" data-platform-pane="node" hidden><code>npm install -g @anthropic-ai/claude-code</code></pre>
+                <pre class="code-pane" id="pane-homebrew" role="tabpanel" aria-labelledby="tab-homebrew" data-platform-pane="homebrew" hidden><code>brew install claude-code</code></pre>
               </article>
 
               <article class="code-window">
@@ -213,14 +213,14 @@ requires_openai_auth = true</code></pre>
               <span class="gemini-star star-one"></span>
               <span class="gemini-star star-two"></span>
               <span class="gemini-star star-three"></span>
-              <span class="gemini-float gf-one"></span>
-              <span class="gemini-float gf-two"></span>
-              <span class="gemini-float gf-three"></span>
-              <span class="gemini-float gf-four"></span>
-              <span class="gemini-float gf-five"></span>
-              <span class="gemini-float gf-six"></span>
+              <img class="gemini-float gf-one" src="./assets/gemini.svg" alt="" aria-hidden="true" />
+              <img class="gemini-float gf-two" src="./assets/gemini.svg" alt="" aria-hidden="true" />
+              <img class="gemini-float gf-three" src="./assets/gemini.svg" alt="" aria-hidden="true" />
+              <img class="gemini-float gf-four" src="./assets/gemini.svg" alt="" aria-hidden="true" />
+              <img class="gemini-float gf-five" src="./assets/gemini.svg" alt="" aria-hidden="true" />
+              <img class="gemini-float gf-six" src="./assets/gemini.svg" alt="" aria-hidden="true" />
               <span class="emblem-core">
-                <span class="emblem-symbol"></span>
+                <img class="emblem-symbol" src="./assets/gemini.svg" alt="" aria-hidden="true" />
               </span>
             </div>
             <div class="stack-cards">
@@ -277,6 +277,6 @@ GEMINI_MODEL=latest-model-name</code></pre>
       <a href="#features" data-dot="features"><span>更多</span></a>
     </aside>
 
-    <script src="./app.js?v=20260613-click-fix"></script>
+    <script src="./app.js?v=20260613-image-fix"></script>
   </body>
 </html>
