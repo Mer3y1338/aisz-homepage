@@ -1,34 +1,86 @@
-const siteName = "词元枢阁 Token Nexus";
+const typePhrases = ["Mer3y Sense"];
 const typeTarget = document.getElementById("typewriter");
+const deck = document.querySelector(".slide-deck");
+const sections = [...document.querySelectorAll("[data-section]")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const transitionMs = reducedMotion ? 120 : 920;
+const wheelThreshold = 220;
+const touchThreshold = 86;
+
+let currentIndex = 0;
+let wheelIntent = 0;
+let wheelDirection = 0;
+let wheelResetTimer = 0;
+let isSwitching = false;
+let touchStartY = 0;
+
+function clampIndex(index) {
+  return Math.max(0, Math.min(index, sections.length - 1));
+}
+
+function sectionIdAt(index) {
+  return sections[index]?.dataset.section ?? "home";
+}
+
+function indexForSection(sectionId) {
+  const foundIndex = sections.findIndex((section) => section.dataset.section === sectionId);
+  return foundIndex === -1 ? 0 : foundIndex;
+}
 
 async function typeSiteName() {
   if (!typeTarget) return;
-  const isCompact = () => window.matchMedia("(max-width: 560px)").matches;
   const renderText = (text) => {
-    if (isCompact()) {
-      typeTarget.innerHTML = text.replace(" Token", "<br>Token");
-      return;
-    }
     typeTarget.textContent = text;
   };
 
   if (reducedMotion) {
-    renderText(siteName);
+    renderText(typePhrases[0]);
     return;
   }
 
-  let typed = "";
-  renderText("");
-  for (const char of siteName) {
-    typed += char;
-    renderText(typed);
-    await new Promise((resolve) => window.setTimeout(resolve, char === " " ? 90 : 72));
+  const wait = (delay) => new Promise((resolve) => window.setTimeout(resolve, delay));
+
+  while (true) {
+    for (const phrase of typePhrases) {
+      let typed = "";
+      renderText("");
+
+      for (const char of phrase) {
+        typed += char;
+        renderText(typed);
+        await wait(char === " " ? 90 : 72);
+      }
+
+      await wait(1350);
+
+      while (typed.length) {
+        typed = typed.slice(0, -1);
+        renderText(typed);
+        await wait(38);
+      }
+
+      await wait(260);
+    }
   }
+}
+
+function restartClass(node, className) {
+  node.classList.remove(className);
+  void node.offsetWidth;
+  node.classList.add(className);
 }
 
 function setActiveSection(sectionId) {
   document.body.dataset.current = sectionId;
+
+  sections.forEach((section) => {
+    const isActive = section.dataset.section === sectionId;
+    if (isActive) {
+      restartClass(section, "is-active-section");
+      return;
+    }
+    section.classList.remove("is-active-section");
+  });
 
   document.querySelectorAll("[data-nav]").forEach((link) => {
     link.classList.toggle("is-active", link.dataset.nav === sectionId);
@@ -40,54 +92,190 @@ function setActiveSection(sectionId) {
 
   document.querySelectorAll("[data-logo-stage]").forEach((stage) => {
     const shouldActivate = stage.dataset.logoStage === sectionId;
-    if (shouldActivate && !stage.classList.contains("is-active")) {
-      stage.classList.remove("is-active");
-      void stage.offsetWidth;
-      stage.classList.add("is-active");
+    if (shouldActivate) {
+      restartClass(stage, "is-active");
       return;
     }
-
-    stage.classList.toggle("is-active", shouldActivate);
+    stage.classList.remove("is-active");
   });
 }
 
-function initSectionObserver() {
-  const sections = [...document.querySelectorAll("[data-section]")];
-  if (!sections.length) return;
+function applyDeckPosition(immediate = false) {
+  if (!deck) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (immediate) {
+    deck.style.transitionDuration = "0ms";
+  }
 
-      if (visible) {
-        setActiveSection(visible.target.dataset.section);
+  deck.style.transform = `translate3d(0, -${currentIndex * 100}svh, 0)`;
+
+  if (immediate) {
+    window.requestAnimationFrame(() => {
+      deck.style.transitionDuration = "";
+    });
+  }
+}
+
+function updateHash(sectionId) {
+  const nextHash = `#${sectionId}`;
+  if (window.location.hash === nextHash) return;
+  window.history.replaceState(null, "", nextHash);
+}
+
+function unlockAfterTransition() {
+  window.setTimeout(() => {
+    isSwitching = false;
+  }, transitionMs);
+}
+
+function goToSection(index, options = {}) {
+  const nextIndex = clampIndex(index);
+  const force = Boolean(options.force);
+  const immediate = Boolean(options.immediate);
+  const updateUrl = options.updateUrl !== false;
+
+  if (nextIndex === currentIndex && !force) return false;
+
+  currentIndex = nextIndex;
+  const sectionId = sectionIdAt(currentIndex);
+  applyDeckPosition(immediate);
+  setActiveSection(sectionId);
+
+  if (updateUrl) {
+    updateHash(sectionId);
+  }
+
+  if (!immediate) {
+    isSwitching = true;
+    unlockAfterTransition();
+  }
+
+  return true;
+}
+
+function goToSectionId(sectionId, options = {}) {
+  return goToSection(indexForSection(sectionId), options);
+}
+
+function moveBy(delta) {
+  if (isSwitching) return;
+  goToSection(currentIndex + delta);
+}
+
+function initPptNavigation() {
+  if (!deck || !sections.length) return;
+
+  document.querySelectorAll("[data-nav], [data-dot], .down-cue").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      const targetId =
+        trigger.dataset.nav ||
+        trigger.dataset.dot ||
+        trigger.getAttribute("href")?.replace("#", "");
+
+      if (!targetId) return;
+      event.preventDefault();
+      goToSectionId(targetId);
+    });
+  });
+
+  window.addEventListener(
+    "wheel",
+    (event) => {
+      if (event.ctrlKey || Math.abs(event.deltaY) < 2) return;
+      event.preventDefault();
+
+      if (isSwitching) return;
+
+      const direction = Math.sign(event.deltaY);
+      if (direction !== wheelDirection) {
+        wheelIntent = 0;
+        wheelDirection = direction;
+      }
+
+      wheelIntent += event.deltaY;
+      window.clearTimeout(wheelResetTimer);
+      wheelResetTimer = window.setTimeout(() => {
+        wheelIntent = 0;
+        wheelDirection = 0;
+      }, 180);
+
+      if (Math.abs(wheelIntent) < wheelThreshold) return;
+
+      const moved = goToSection(currentIndex + direction);
+      wheelIntent = 0;
+      wheelDirection = 0;
+
+      if (!moved) {
+        isSwitching = false;
       }
     },
-    {
-      threshold: [0.38, 0.55, 0.72],
-    },
+    { passive: false },
   );
 
-  sections.forEach((section) => observer.observe(section));
+  window.addEventListener("keydown", (event) => {
+    if (event.defaultPrevented || isSwitching) return;
+
+    const activeElement = document.activeElement;
+    if (activeElement?.matches("button, a, input, textarea, select")) return;
+
+    const downKeys = ["ArrowDown", "PageDown", " "];
+    const upKeys = ["ArrowUp", "PageUp"];
+
+    if (downKeys.includes(event.key)) {
+      event.preventDefault();
+      moveBy(1);
+    }
+
+    if (upKeys.includes(event.key)) {
+      event.preventDefault();
+      moveBy(-1);
+    }
+  });
+
+  window.addEventListener(
+    "touchstart",
+    (event) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+    },
+    { passive: true },
+  );
+
+  window.addEventListener(
+    "touchend",
+    (event) => {
+      if (isSwitching || !touchStartY) return;
+
+      const endY = event.changedTouches[0]?.clientY ?? touchStartY;
+      const deltaY = touchStartY - endY;
+      touchStartY = 0;
+
+      if (Math.abs(deltaY) < touchThreshold) return;
+      moveBy(Math.sign(deltaY));
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("hashchange", () => {
+    const targetId = window.location.hash.replace("#", "");
+    if (!targetId) return;
+    goToSectionId(targetId, { updateUrl: false });
+  });
 }
 
 function initPlatformTabs() {
-  const switcher = document.querySelector(".switcher");
-  if (!switcher) return;
+  document.querySelectorAll(".switcher").forEach((switcher) => {
+    switcher.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-platform]");
+      if (!button) return;
 
-  switcher.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-platform]");
-    if (!button) return;
+      const platform = button.dataset.platform;
+      switcher.querySelectorAll("[data-platform]").forEach((item) => {
+        item.classList.toggle("is-active", item === button);
+      });
 
-    const platform = button.dataset.platform;
-    switcher.querySelectorAll("[data-platform]").forEach((item) => {
-      item.classList.toggle("is-active", item === button);
-    });
-
-    document.querySelectorAll("[data-platform-pane]").forEach((pane) => {
-      pane.classList.toggle("is-active", pane.dataset.platformPane === platform);
+      document.querySelectorAll("[data-platform-pane]").forEach((pane) => {
+        pane.classList.toggle("is-active", pane.dataset.platformPane === platform);
+      });
     });
   });
 }
@@ -125,26 +313,19 @@ function initCopyButtons() {
   });
 }
 
-function initHashLanding() {
-  const land = () => {
-    if (!window.location.hash) return;
+function initInitialSection() {
+  const initialId = window.location.hash.replace("#", "");
+  currentIndex = initialId ? indexForSection(initialId) : 0;
+  applyDeckPosition(true);
+  setActiveSection(sectionIdAt(currentIndex));
 
-    const target = document.querySelector(window.location.hash);
-    if (!target) return;
-
-    const previousBehavior = document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior = "auto";
-    target.scrollIntoView({ block: "start" });
-    window.requestAnimationFrame(() => {
-      document.documentElement.style.scrollBehavior = previousBehavior;
-    });
-  };
-
-  window.addEventListener("load", () => window.setTimeout(land, 80));
+  if (!initialId) {
+    updateHash(sectionIdAt(currentIndex));
+  }
 }
 
+initInitialSection();
 typeSiteName();
-initSectionObserver();
+initPptNavigation();
 initPlatformTabs();
 initCopyButtons();
-initHashLanding();
