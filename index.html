@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#faf9f5" />
+    <title>词元枢阁 Token Nexus</title>
+    <meta
+      name="description"
+      content="词元枢阁 Token Nexus，AI 开发工具统一接入平台。"
+    />
+    <link rel="icon" type="image/svg+xml" href="./assets/aether_adaptive.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-current="home">
+    <div class="paper-texture" aria-hidden="true"></div>
+    <div class="aether-logo-fixed" aria-hidden="true">
+      <div class="aether-symbol-layer">
+        <span class="logo-ripple ripple-one"></span>
+        <span class="logo-ripple ripple-two"></span>
+        <span class="logo-fill"></span>
+        <span class="logo-lines"></span>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#home" aria-label="词元枢阁首页">
+          <span class="brand-mark"></span>
+          <span>
+            <strong>词元枢阁</strong>
+            <small>Token Nexus</small>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="主导航">
+          <a href="#home" data-nav="home">首页</a>
+          <a href="#claude" data-nav="claude">Claude</a>
+          <a href="#codex" data-nav="codex">OpenAI</a>
+          <a href="#gemini" data-nav="gemini">Gemini</a>
+          <a href="#features" data-nav="features">更多</a>
+        </nav>
+
+        <a class="login-link" href="https://api.aisz.mom/login" target="_blank" rel="noreferrer">
+          登录
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="snap-section hero-section" id="home" data-section="home">
+        <div class="hero-content">
+          <p class="kicker">AI Coding Gateway</p>
+          <h1>
+            <span class="welcome-text">欢迎使用</span>
+            <span class="type-wrap"><span id="typewriter"></span><span class="cursor">_</span></span>
+          </h1>
+          <p class="hero-copy">
+            AI 开发工具统一接入平台<br />
+            <span class="desktop-copy">整合 Claude Code、Codex CLI、Gemini CLI 等多个 AI 编程助手</span>
+            <span class="mobile-copy">整合 Claude Code、Codex CLI、<br />Gemini CLI 等多个 AI 编程助手</span>
+          </p>
+        </div>
+        <a class="down-cue" href="#claude" aria-label="继续向下浏览">
+          <span></span>
+        </a>
+      </section>
+
+      <section class="snap-section content-section" id="claude" data-section="claude">
+        <div class="section-inner">
+          <div class="section-copy">
+            <p class="eyebrow">Claude Code</p>
+            <h2>让 Claude 在终端里沿用同一把钥匙。</h2>
+            <p>
+              面向命令行开发工作流，把 Anthropic 兼容入口收拢到统一网关。安装、
+              环境变量和配置文件都保持清晰，适合直接放进日常开发机。
+            </p>
+            <div class="pill-row">
+              <span>PowerShell</span>
+              <span>Node.js</span>
+              <span>Homebrew</span>
+            </div>
+          </div>
+
+          <div class="code-stack">
+            <div class="model-emblem claude-emblem" data-logo-stage="claude" aria-hidden="true">
+              <span class="emblem-ripple r-one"></span>
+              <span class="emblem-ripple r-two"></span>
+              <span class="emblem-ripple r-three"></span>
+              <span class="emblem-core">
+                <span class="emblem-symbol"></span>
+                <span class="emblem-lines"></span>
+              </span>
+            </div>
+            <div class="switcher" role="tablist" aria-label="Claude 安装方式">
+              <button class="is-active" type="button" data-platform="powershell">PowerShell</button>
+              <button type="button" data-platform="node">Node.js</button>
+              <button type="button" data-platform="homebrew">Homebrew</button>
+            </div>
+
+            <article class="code-window claude-code">
+              <div class="window-bar">
+                <span>install</span>
+                <button type="button" data-copy-target="active-claude">复制</button>
+              </div>
+              <pre class="code-pane is-active" data-platform-pane="powershell"><code>irm https://api.aisz.mom/install.ps1 | iex</code></pre>
+              <pre class="code-pane" data-platform-pane="node"><code>npm install -g @anthropic-ai/claude-code</code></pre>
+              <pre class="code-pane" data-platform-pane="homebrew"><code>brew install claude-code</code></pre>
+            </article>
+
+            <article class="code-window">
+              <div class="window-bar">
+                <span>~/.claude/settings.json</span>
+                <button type="button" data-copy-target="#claudeSettings">复制</button>
+              </div>
+              <pre><code id="claudeSettings">{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "your-api-key",
+    "ANTHROPIC_BASE_URL": "https://api.aisz.mom"
+  }
+}</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="snap-section content-section alt-section" id="codex" data-section="codex">
+        <div class="section-inner reverse">
+          <div class="section-copy">
+            <p class="eyebrow">OpenAI / Codex CLI</p>
+            <h2>把 Codex CLI 接到 OpenAI 兼容协议。</h2>
+            <p>
+              使用 Responses wire API，保留熟悉的 OpenAI provider 配置，同时把
+              base_url 指向词元枢阁。模型切换、推理强度和鉴权都在本地配置里完成。
+            </p>
+            <div class="pill-row muted">
+              <span>Responses API</span>
+              <span>TOML</span>
+              <span>Bearer Token</span>
+            </div>
+          </div>
+
+          <div class="code-stack">
+            <div class="model-emblem openai-emblem" data-logo-stage="codex" aria-hidden="true">
+              <span class="emblem-ripple r-one"></span>
+              <span class="emblem-ripple r-two"></span>
+              <span class="emblem-ripple r-three"></span>
+              <svg class="openai-build-svg" viewBox="0 0 24 24" role="presentation">
+                <path
+                  class="openai-build-outline"
+                  pathLength="1"
+                  d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"
+                />
+                <path
+                  class="openai-build-fill"
+                  d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"
+                />
+              </svg>
+              <span class="emblem-core">
+                <span class="emblem-symbol"></span>
+                <span class="emblem-lines"></span>
+              </span>
+            </div>
+            <article class="code-window large">
+              <div class="window-bar">
+                <span>~/.codex/config.toml</span>
+                <button type="button" data-copy-target="#codexConfig">复制</button>
+              </div>
+              <pre><code id="codexConfig">model_provider = "aether"
+model = "latest-model-name"
+model_reasoning_effort = "high"
+
+[model_providers.aether]
+name = "OpenAI"
+base_url = "https://api.aisz.mom/v1"
+wire_api = "responses"
+requires_openai_auth = true</code></pre>
+            </article>
+
+            <article class="code-window compact">
+              <div class="window-bar">
+                <span>auth.json</span>
+                <button type="button" data-copy-target="#codexAuth">复制</button>
+              </div>
+              <pre><code id="codexAuth">{
+  "OPENAI_API_KEY": "your-api-key"
+}</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="snap-section content-section" id="gemini" data-section="gemini">
+        <div class="section-inner">
+          <div class="section-copy">
+            <p class="eyebrow">Gemini CLI</p>
+            <h2>Gemini 的入口也可以保持同一套习惯。</h2>
+            <p>
+              环境变量式接入更轻，适合脚本、自动化任务和临时工作区。只需要指定
+              BASE URL、API Key 与模型名，终端里的工具链就能接入同一平台。
+            </p>
+            <div class="metric-row" aria-label="接入特点">
+              <span><strong>3</strong> 个变量</span>
+              <span><strong>1</strong> 个入口</span>
+              <span><strong>CLI</strong> 友好</span>
+            </div>
+          </div>
+
+          <div class="code-stack">
+            <div class="model-emblem gemini-emblem" data-logo-stage="gemini" aria-hidden="true">
+              <span class="emblem-ripple r-one"></span>
+              <span class="emblem-ripple r-two"></span>
+              <span class="emblem-ripple r-three"></span>
+              <span class="gemini-star star-one"></span>
+              <span class="gemini-star star-two"></span>
+              <span class="gemini-star star-three"></span>
+              <span class="gemini-float gf-one"></span>
+              <span class="gemini-float gf-two"></span>
+              <span class="gemini-float gf-three"></span>
+              <span class="gemini-float gf-four"></span>
+              <span class="gemini-float gf-five"></span>
+              <span class="gemini-float gf-six"></span>
+              <span class="emblem-core">
+                <span class="emblem-symbol"></span>
+                <span class="emblem-lines"></span>
+              </span>
+            </div>
+            <article class="code-window large env-window">
+              <div class="window-bar">
+                <span>.env</span>
+                <button type="button" data-copy-target="#geminiEnv">复制</button>
+              </div>
+              <pre><code id="geminiEnv">GOOGLE_GEMINI_BASE_URL=https://api.aisz.mom
+GEMINI_API_KEY=your-api-key
+GEMINI_MODEL=latest-model-name</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="snap-section feature-section" id="features" data-section="features">
+        <div class="features-inner">
+          <div class="section-copy centered">
+            <p class="eyebrow">功能开发进度</p>
+            <h2>常用 AI 编程助手，收束到一个安静的入口。</h2>
+            <p>
+              首页保留目标站的进度感：已完成的能力沉稳落地，后续协同开发能力仍在推进。
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="status done">已完成</span>
+              <h3>Claude / OpenAI / Gemini</h3>
+              <p>已完整接入三大主流 AI 编程助手的标准 API。</p>
+            </article>
+            <article class="feature-card">
+              <span class="status done">已完成</span>
+              <h3>格式转换</h3>
+              <p>开启或关闭 API 格式相互转换，并支持自定义请求头。</p>
+            </article>
+            <article class="feature-card">
+              <span class="status progress">开发中</span>
+              <h3>协同开发</h3>
+              <p>远程开发、Skill 分享、Playground 等功能即将到来。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="scroll-dots" aria-label="页面位置">
+      <a href="#home" data-dot="home"><span>首页</span></a>
+      <a href="#claude" data-dot="claude"><span>Claude</span></a>
+      <a href="#codex" data-dot="codex"><span>OpenAI</span></a>
+      <a href="#gemini" data-dot="gemini"><span>Gemini</span></a>
+      <a href="#features" data-dot="features"><span>更多</span></a>
+    </aside>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
