@@ -6,6 +6,10 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matc
 const transitionMs = reducedMotion ? 120 : 920;
 const wheelThreshold = 220;
 const touchThreshold = 86;
+const wheelPreviewRatio = 0.12;
+const touchPreviewRatio = 0.22;
+const wheelPreviewMs = 110;
+const wheelSettleDelay = 360;
 
 let currentIndex = 0;
 let wheelIntent = 0;
@@ -13,6 +17,11 @@ let wheelDirection = 0;
 let wheelResetTimer = 0;
 let isSwitching = false;
 let touchStartY = 0;
+let touchCurrentY = 0;
+let previewOffset = 0;
+let pendingPreviewOffset = 0;
+let previewFrame = 0;
+let previewTransitionTimer = 0;
 
 function clampIndex(index) {
   return Math.max(0, Math.min(index, sections.length - 1));
@@ -100,14 +109,90 @@ function setActiveSection(sectionId) {
   });
 }
 
+function getViewportHeight() {
+  return window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight;
+}
+
+function formatDeckTransform(index, offsetPx = 0) {
+  const operator = offsetPx < 0 ? "-" : "+";
+  return `translate3d(0, calc(-${index * 100}svh ${operator} ${Math.abs(offsetPx)}px), 0)`;
+}
+
+function easeOutDistance(progress) {
+  const normalized = Math.max(0, Math.min(progress, 1));
+  return 1 - (1 - normalized) ** 2;
+}
+
+function canMove(direction) {
+  const nextIndex = currentIndex + direction;
+  return nextIndex >= 0 && nextIndex < sections.length;
+}
+
+function previewDistanceFromIntent(intent, threshold, maxRatio, direction) {
+  const maxDistance = getViewportHeight() * maxRatio;
+  const edgeFactor = canMove(direction) ? 1 : 0.32;
+  return maxDistance * edgeFactor * easeOutDistance(Math.abs(intent) / threshold);
+}
+
+function previewDeckOffset(offsetPx, options = {}) {
+  if (!deck || reducedMotion) return;
+  const duration = options.duration ?? 0;
+  pendingPreviewOffset = offsetPx;
+  if (previewFrame) return;
+
+  previewFrame = window.requestAnimationFrame(() => {
+    previewFrame = 0;
+    previewOffset = pendingPreviewOffset;
+    window.clearTimeout(previewTransitionTimer);
+    deck.style.transitionDuration = `${duration}ms`;
+    deck.style.transform = formatDeckTransform(currentIndex, previewOffset);
+  });
+}
+
+function settleDeckPreview(duration = 180) {
+  if (!deck || previewOffset === 0) return;
+  if (previewFrame) {
+    window.cancelAnimationFrame(previewFrame);
+    previewFrame = 0;
+  }
+  previewOffset = 0;
+  pendingPreviewOffset = 0;
+  window.clearTimeout(previewTransitionTimer);
+  deck.style.transitionDuration = `${duration}ms`;
+  deck.style.transform = formatDeckTransform(currentIndex, 0);
+  previewTransitionTimer = window.setTimeout(() => {
+    if (!isSwitching) {
+      deck.style.transitionDuration = "";
+    }
+  }, duration);
+}
+
+function clearWheelIntent(shouldSettle = true) {
+  window.clearTimeout(wheelResetTimer);
+  wheelIntent = 0;
+  wheelDirection = 0;
+  if (shouldSettle) {
+    settleDeckPreview();
+  }
+}
+
 function applyDeckPosition(immediate = false) {
   if (!deck) return;
+  if (previewFrame) {
+    window.cancelAnimationFrame(previewFrame);
+    previewFrame = 0;
+  }
+  window.clearTimeout(previewTransitionTimer);
 
   if (immediate) {
     deck.style.transitionDuration = "0ms";
+  } else {
+    deck.style.transitionDuration = "";
   }
 
-  deck.style.transform = `translate3d(0, -${currentIndex * 100}svh, 0)`;
+  previewOffset = 0;
+  pendingPreviewOffset = 0;
+  deck.style.transform = formatDeckTransform(currentIndex, 0);
 
   if (immediate) {
     window.requestAnimationFrame(() => {
@@ -138,6 +223,7 @@ function goToSection(index, options = {}) {
 
   currentIndex = nextIndex;
   const sectionId = sectionIdAt(currentIndex);
+  clearWheelIntent(false);
   applyDeckPosition(immediate);
   setActiveSection(sectionId);
 
@@ -195,17 +281,23 @@ function initPptNavigation() {
       wheelIntent += event.deltaY;
       window.clearTimeout(wheelResetTimer);
       wheelResetTimer = window.setTimeout(() => {
-        wheelIntent = 0;
-        wheelDirection = 0;
-      }, 180);
+        clearWheelIntent();
+      }, wheelSettleDelay);
+
+      const previewDistance = previewDistanceFromIntent(
+        wheelIntent,
+        wheelThreshold,
+        wheelPreviewRatio,
+        direction,
+      );
+      previewDeckOffset(-direction * previewDistance, { duration: wheelPreviewMs });
 
       if (Math.abs(wheelIntent) < wheelThreshold) return;
 
-      const moved = goToSection(currentIndex + direction);
-      wheelIntent = 0;
-      wheelDirection = 0;
-
-      if (!moved) {
+      if (canMove(direction)) {
+        goToSection(currentIndex + direction);
+      } else {
+        clearWheelIntent();
         isSwitching = false;
       }
     },
@@ -236,6 +328,28 @@ function initPptNavigation() {
     "touchstart",
     (event) => {
       touchStartY = event.touches[0]?.clientY ?? 0;
+      touchCurrentY = touchStartY;
+    },
+    { passive: true },
+  );
+
+  window.addEventListener(
+    "touchmove",
+    (event) => {
+      if (isSwitching || !touchStartY) return;
+
+      touchCurrentY = event.touches[0]?.clientY ?? touchCurrentY;
+      const deltaY = touchStartY - touchCurrentY;
+      if (Math.abs(deltaY) < 2) return;
+
+      const direction = Math.sign(deltaY);
+      const previewDistance = previewDistanceFromIntent(
+        deltaY,
+        touchThreshold,
+        touchPreviewRatio,
+        direction,
+      );
+      previewDeckOffset(-direction * previewDistance);
     },
     { passive: true },
   );
@@ -247,13 +361,30 @@ function initPptNavigation() {
 
       const endY = event.changedTouches[0]?.clientY ?? touchStartY;
       const deltaY = touchStartY - endY;
+      const direction = Math.sign(deltaY);
       touchStartY = 0;
+      touchCurrentY = 0;
 
-      if (Math.abs(deltaY) < touchThreshold) return;
-      moveBy(Math.sign(deltaY));
+      if (Math.abs(deltaY) < touchThreshold) {
+        settleDeckPreview();
+        return;
+      }
+
+      if (canMove(direction)) {
+        moveBy(direction);
+        return;
+      }
+
+      settleDeckPreview();
     },
     { passive: true },
   );
+
+  window.addEventListener("touchcancel", () => {
+    touchStartY = 0;
+    touchCurrentY = 0;
+    settleDeckPreview();
+  });
 
   window.addEventListener("hashchange", () => {
     const targetId = window.location.hash.replace("#", "");
