@@ -116,7 +116,6 @@ function getViewportHeight() {
 function formatDeckTransform(index, offsetPx = 0) {
   const vh = window.innerHeight;
   const base = index * vh;
-  const offset = base + (offsetPx < 0 ? offsetPx : offsetPx);
   return `translate3d(0, -${base - offsetPx}px, 0)`;
 }
 
