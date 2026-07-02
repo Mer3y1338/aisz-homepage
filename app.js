@@ -339,6 +339,8 @@ function initPptNavigation() {
       const deltaY = touchStartY - touchCurrentY;
       if (Math.abs(deltaY) < 2) return;
 
+      event.preventDefault();
+
       const direction = Math.sign(deltaY);
       const previewDistance = previewDistanceFromIntent(
         deltaY,
@@ -348,7 +350,7 @@ function initPptNavigation() {
       );
       previewDeckOffset(-direction * previewDistance);
     },
-    { passive: true },
+    { passive: false },
   );
 
   window.addEventListener(

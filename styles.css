@@ -61,6 +61,7 @@ html {
   height: 100%;
   overflow: hidden;
   scroll-behavior: auto;
+  overscroll-behavior: none;
 }
 
 body {
@@ -69,6 +70,7 @@ body {
   min-height: 100svh;
   margin: 0;
   overflow: hidden;
+  overscroll-behavior: none;
   background:
     radial-gradient(circle at 50% 42%, rgba(212, 162, 127, 0.2), transparent 30rem),
     linear-gradient(180deg, var(--paper-soft), var(--paper) 34%, #f7f4ec 100%);
@@ -646,6 +648,7 @@ main {
   transform: translate3d(0, 0, 0);
   transition: transform 860ms cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
+  touch-action: pan-x;
 }
 
 .snap-section .hero-content,
@@ -1617,6 +1620,7 @@ pre {
     max-height: 180px;
     overflow-y: auto;
     font-size: 12px;
+    touch-action: pan-y;
   }
 
   .content-section .code-window .window-bar {
