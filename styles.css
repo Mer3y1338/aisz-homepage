@@ -1737,3 +1737,53 @@ pre {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ─── Logo Stage ─── */
+.logo-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logo-stage-inner {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-out;
+}
+
+body[data-current="home"] .logo-stage-inner { opacity: 0; transform: scale(1.2); }
+body[data-current="claude"] .logo-stage-inner { opacity: 1; transform: translateX(28vw); }
+body[data-current="codex"] .logo-stage-inner { opacity: 1; transform: translateX(-28vw); }
+body[data-current="gemini"] .logo-stage-inner { opacity: 1; transform: translateX(28vw); }
+body[data-current="features"] .logo-stage-inner { opacity: 1; transform: scale(0.5); }
+
+.stage-logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stage-logo.is-active {
+  opacity: 0.15;
+  transform: scale(1);
+}
+
+body[data-current="features"] .stage-logo.is-active {
+  opacity: 0.06;
+}
+
+.logo-stage .model-emblem {
+  width: 320px;
+  height: 320px;
+}

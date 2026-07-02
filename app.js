@@ -107,6 +107,16 @@ function setActiveSection(sectionId) {
     }
     stage.classList.remove("is-active");
   });
+
+  // Logo stage
+  document.querySelectorAll(".logo-stage .stage-logo").forEach((logo) => {
+    const shouldActivate = logo.dataset.logo === sectionId;
+    if (shouldActivate) {
+      restartClass(logo, "is-active");
+    } else {
+      logo.classList.remove("is-active");
+    }
+  });
 }
 
 function getViewportHeight() {
