@@ -417,8 +417,6 @@ body:not([data-current="home"]) .aether-symbol-layer {
 
 .openai-build-outline {
   stroke-width: 0.5;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
   transform-origin: center;
 }
 
@@ -1298,51 +1296,39 @@ pre {
   0% {
     opacity: 0;
     stroke-dashoffset: 1;
-    filter: blur(1.5px) drop-shadow(0 0 3px var(--provider-glow));
   }
   8% {
-    opacity: 0.7;
-    filter: blur(0.5px) drop-shadow(0 0 6px var(--provider-glow));
+    opacity: 0.8;
   }
-  72% {
-    stroke-dashoffset: 0.05;
-    opacity: 0.9;
-    filter: blur(0) drop-shadow(0 0 8px var(--provider-glow));
-  }
-  88% {
+  80% {
     stroke-dashoffset: 0;
-    opacity: 0.6;
+    opacity: 0.9;
   }
   100% {
     stroke-dashoffset: 0;
     opacity: 0.14;
-    filter: blur(0) drop-shadow(0 0 0 transparent);
   }
 }
 
 @keyframes openai-outline-draw {
   0% {
     opacity: 0;
-    stroke-dashoffset: 1;
-    filter: blur(2.5px) drop-shadow(0 0 8px var(--provider-glow));
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 8px var(--provider-glow));
   }
-  8% {
-    opacity: 0.85;
-    filter: blur(1px) drop-shadow(0 0 10px var(--provider-glow));
+  20% {
+    opacity: 0.9;
+    transform: scale(0.98);
   }
-  50% {
-    stroke-dashoffset: 0.3;
-    filter: blur(0.3px) drop-shadow(0 0 6px var(--provider-glow));
-  }
-  82% {
+  60% {
     opacity: 0.92;
-    stroke-dashoffset: 0;
-    filter: blur(0) drop-shadow(0 0 4px var(--provider-glow));
+    transform: scale(1.005);
+    filter: drop-shadow(0 0 5px var(--provider-glow));
   }
   100% {
     opacity: 0.86;
-    stroke-dashoffset: 0;
-    filter: blur(0) drop-shadow(0 0 3px var(--provider-glow));
+    transform: scale(1);
+    filter: drop-shadow(0 0 3px var(--provider-glow));
   }
 }
 
