@@ -1306,7 +1306,7 @@ pre {
   }
   100% {
     stroke-dashoffset: 0;
-    opacity: 0.14;
+    opacity: 0;
   }
 }
 
@@ -1352,7 +1352,7 @@ pre {
     filter: drop-shadow(0 0 16px var(--provider-glow));
   }
   100% {
-    opacity: 0.12;
+    opacity: 0;
     stroke-width: 2.2;
     transform: scale(1.018);
     filter: drop-shadow(0 0 0 transparent);
