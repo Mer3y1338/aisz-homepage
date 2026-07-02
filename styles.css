@@ -65,6 +65,7 @@ html {
 
 body {
   height: 100%;
+  min-height: 100vh;
   min-height: 100svh;
   margin: 0;
   overflow: hidden;
@@ -332,6 +333,7 @@ body:not([data-current="home"]) .aether-symbol-layer {
 .model-emblem {
   position: relative;
   display: grid;
+  width: clamp(240px, min(31vw, calc((100vh - 150px) * 0.382)), 400px);
   width: clamp(240px, min(31vw, calc((100svh - 150px) * 0.382)), 400px);
   aspect-ratio: 1;
   place-items: center;
@@ -680,7 +682,9 @@ main {
 .snap-section {
   position: relative;
   z-index: 2;
+  height: 100vh;
   height: 100svh;
+  min-height: 100vh;
   min-height: 100svh;
   overflow: hidden;
   padding: 96px max(24px, calc((100vw - 1180px) / 2)) 64px;
@@ -894,6 +898,7 @@ main {
 }
 
 .content-section .code-stack {
+  height: min(690px, calc(100vh - 150px));
   height: min(690px, calc(100svh - 150px));
   grid-template-rows: 38.2% minmax(0, 61.8%);
   gap: clamp(14px, 2.4vh, 22px);
@@ -1499,7 +1504,9 @@ pre {
   }
 
   .snap-section {
+    height: 100vh;
     height: 100svh;
+    min-height: 100vh;
     min-height: 100svh;
     padding: 82px 20px 40px;
   }
@@ -1521,13 +1528,15 @@ pre {
     max-width: calc(100vw - 52px);
     font-size: 15px;
     line-height: 1.72;
-    word-break: break-all;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   .section-inner,
   .section-inner.reverse {
     grid-template-columns: 1fr;
     gap: 22px;
+    max-height: calc(100vh - 122px);
     max-height: calc(100svh - 122px);
   }
 
@@ -1668,9 +1677,20 @@ pre {
   .content-section .section-copy p:not(.eyebrow),
   .content-section .pill-row,
   .content-section .metric-row,
-  .content-section .switcher,
-  .content-section .code-window {
+  .content-section .switcher {
     display: none;
+  }
+
+  .content-section .code-window {
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 12px;
+  }
+
+  .content-section .code-window .window-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 
   .content-section .model-emblem,
@@ -1717,11 +1737,13 @@ pre {
   }
 
   .content-section .code-stack {
+    height: min(570px, calc(100vh - 126px));
     height: min(570px, calc(100svh - 126px));
     grid-template-rows: 38.2% minmax(0, 61.8%);
   }
 
   .model-emblem {
+    width: clamp(230px, min(24vw, calc((100vh - 126px) * 0.42)), 300px);
     width: clamp(230px, min(24vw, calc((100svh - 126px) * 0.42)), 300px);
   }
 
@@ -1744,6 +1766,7 @@ pre {
   .section-inner,
   .section-inner.reverse {
     gap: 14px;
+    max-height: calc(100vh - 102px);
     max-height: calc(100svh - 102px);
   }
 

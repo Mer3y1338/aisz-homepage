@@ -114,8 +114,10 @@ function getViewportHeight() {
 }
 
 function formatDeckTransform(index, offsetPx = 0) {
-  const operator = offsetPx < 0 ? "-" : "+";
-  return `translate3d(0, calc(-${index * 100}svh ${operator} ${Math.abs(offsetPx)}px), 0)`;
+  const vh = window.innerHeight;
+  const base = index * vh;
+  const offset = base + (offsetPx < 0 ? offsetPx : offsetPx);
+  return `translate3d(0, -${base - offsetPx}px, 0)`;
 }
 
 function easeOutDistance(progress) {
@@ -204,7 +206,7 @@ function applyDeckPosition(immediate = false) {
 function updateHash(sectionId) {
   const nextHash = `#${sectionId}`;
   if (window.location.hash === nextHash) return;
-  window.history.replaceState(null, "", nextHash);
+  window.history.pushState(null, "", nextHash);
 }
 
 function unlockAfterTransition() {
@@ -306,9 +308,7 @@ function initPptNavigation() {
 
   window.addEventListener("keydown", (event) => {
     if (event.defaultPrevented || isSwitching) return;
-
-    const activeElement = document.activeElement;
-    if (activeElement?.matches("button, a, input, textarea, select")) return;
+    if (event.target.closest("a, button, input, textarea, select, [role='button']")) return;
 
     const downKeys = ["ArrowDown", "PageDown", " "];
     const upKeys = ["ArrowUp", "PageUp"];
@@ -316,9 +316,7 @@ function initPptNavigation() {
     if (downKeys.includes(event.key)) {
       event.preventDefault();
       moveBy(1);
-    }
-
-    if (upKeys.includes(event.key)) {
+    } else if (upKeys.includes(event.key)) {
       event.preventDefault();
       moveBy(-1);
     }
@@ -465,3 +463,5 @@ typeSiteName();
 initPptNavigation();
 initPlatformTabs();
 initCopyButtons();
+
+window.addEventListener("resize", () => applyDeckPosition(true));
