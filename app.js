@@ -1,6 +1,7 @@
 const typePhrases = ["Mer3y Sense"];
 const typeTarget = document.getElementById("typewriter");
 const deck = document.querySelector(".slide-deck");
+const logoTravelLayer = document.querySelector(".logo-travel-layer");
 const sections = [...document.querySelectorAll("[data-section]")];
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const transitionMs = reducedMotion ? 120 : 920;
@@ -18,10 +19,18 @@ let wheelResetTimer = 0;
 let isSwitching = false;
 let touchStartY = 0;
 let touchCurrentY = 0;
+let touchUsedScrollable = false;
 let previewOffset = 0;
 let pendingPreviewOffset = 0;
 let previewFrame = 0;
 let previewTransitionTimer = 0;
+let logoTravelTimer = 0;
+let logoTravelTargetId = "";
+const logoStageTimers = new Map();
+const travelLogoSections = new Set(["claude", "codex", "gemini"]);
+const logoTravelMs = 860;
+const logoTravelClearMs = 860;
+const logoTravelBuildDelay = 860;
 
 function clampIndex(index) {
   return Math.max(0, Math.min(index, sections.length - 1));
@@ -79,6 +88,113 @@ function restartClass(node, className) {
   node.classList.add(className);
 }
 
+function getLogoActivationDelay(stageId) {
+  if (reducedMotion) return 0;
+  return stageId === logoTravelTargetId ? logoTravelBuildDelay : 0;
+}
+
+function logoAssetForSection(sectionId) {
+  return {
+    claude: {
+      src: "./assets/claude.svg",
+      core: "rgba(217, 119, 87, 0.5)",
+      glow: "rgba(217, 119, 87, 0.28)",
+    },
+    codex: {
+      src: "./assets/openai.svg",
+      core: "rgba(25, 25, 25, 0.32)",
+      glow: "rgba(25, 25, 25, 0.2)",
+    },
+    gemini: {
+      src: "./assets/gemini.svg",
+      core: "rgba(127, 109, 242, 0.5)",
+      glow: "rgba(111, 125, 255, 0.3)",
+    },
+  }[sectionId];
+}
+
+function logoMotionRect(sectionId, slideDelta = 0) {
+  const stage = document.querySelector(`[data-logo-stage="${sectionId}"]`);
+  const logo = stage?.querySelector(".provider-build-svg, .openai-build-svg, .emblem-core");
+  if (!stage || !logo) return null;
+
+  const rect = logo.getBoundingClientRect();
+  const yOffset = slideDelta * getSlideHeight();
+  return {
+    left: rect.left,
+    top: rect.top - yOffset,
+    width: rect.width,
+    height: rect.height,
+    stage,
+  };
+}
+
+function clearLogoTravel() {
+  window.clearTimeout(logoTravelTimer);
+  logoTravelTargetId = "";
+  document.querySelectorAll(".model-emblem.is-travel-target").forEach((stage) => {
+    stage.classList.remove("is-travel-target");
+  });
+  if (logoTravelLayer) {
+    logoTravelLayer.textContent = "";
+  }
+}
+
+function playLogoTravel(fromId, toId, slideDelta) {
+  if (
+    reducedMotion ||
+    !logoTravelLayer ||
+    fromId === toId ||
+    !travelLogoSections.has(fromId) ||
+    !travelLogoSections.has(toId)
+  ) {
+    return;
+  }
+
+  clearLogoTravel();
+
+  const fromAsset = logoAssetForSection(fromId);
+  const toAsset = logoAssetForSection(toId);
+  const fromRect = logoMotionRect(fromId);
+  const toRect = logoMotionRect(toId, slideDelta);
+  if (!fromAsset || !toAsset || !fromRect || !toRect) {
+    return;
+  }
+  logoTravelTargetId = toId;
+
+  const size = Math.max(fromRect.width, fromRect.height, toRect.width, toRect.height);
+  const fromX = fromRect.left + fromRect.width / 2 - size / 2;
+  const fromY = fromRect.top + fromRect.height / 2 - size / 2;
+  const toX = toRect.left + toRect.width / 2 - size / 2;
+  const toY = toRect.top + toRect.height / 2 - size / 2;
+
+  const makeGhost = (sectionId, asset) => {
+    const ghost = document.createElement("span");
+    ghost.className = "logo-travel-ghost is-out";
+    ghost.dataset.provider = sectionId;
+    ghost.style.setProperty("--travel-size", `${size}px`);
+    ghost.style.setProperty("--travel-from-x", `${fromX}px`);
+    ghost.style.setProperty("--travel-from-y", `${fromY}px`);
+    ghost.style.setProperty("--travel-to-x", `${toX}px`);
+    ghost.style.setProperty("--travel-to-y", `${toY}px`);
+    ghost.style.setProperty("--travel-core", asset.core);
+    ghost.style.setProperty("--travel-glow", asset.glow);
+    ghost.style.animationDuration = `${logoTravelMs}ms, ${logoTravelMs}ms`;
+    ghost.innerHTML = `<img src="${asset.src}" alt="" aria-hidden="true" />`;
+    return ghost;
+  };
+
+  const leavingGhost = makeGhost(fromId, fromAsset);
+
+  toRect.stage.classList.add("is-travel-target");
+  logoTravelLayer.append(leavingGhost);
+  logoTravelTimer = window.setTimeout(() => {
+    logoTravelTargetId = "";
+    toRect.stage.classList.remove("is-travel-target");
+    leavingGhost.remove();
+  }, logoTravelClearMs);
+}
+
 function setActiveSection(sectionId) {
   document.body.dataset.current = sectionId;
 
@@ -101,7 +217,24 @@ function setActiveSection(sectionId) {
 
   document.querySelectorAll("[data-logo-stage]").forEach((stage) => {
     const shouldActivate = stage.dataset.logoStage === sectionId;
+    window.clearTimeout(logoStageTimers.get(stage));
+    logoStageTimers.delete(stage);
+
     if (shouldActivate) {
+      stage.classList.remove("is-active");
+      const activationDelay = getLogoActivationDelay(stage.dataset.logoStage);
+
+      if (activationDelay) {
+        const timer = window.setTimeout(() => {
+          logoStageTimers.delete(stage);
+          if (document.body.dataset.current === sectionId) {
+            restartClass(stage, "is-active");
+          }
+        }, activationDelay);
+        logoStageTimers.set(stage, timer);
+        return;
+      }
+
       restartClass(stage, "is-active");
       return;
     }
@@ -113,9 +246,12 @@ function getViewportHeight() {
   return window.visualViewport?.height || window.innerHeight || document.documentElement.clientHeight;
 }
 
+function getSlideHeight() {
+  return sections[0]?.getBoundingClientRect().height || getViewportHeight();
+}
+
 function formatDeckTransform(index, offsetPx = 0) {
-  const vh = window.innerHeight;
-  const base = index * vh;
+  const base = index * getSlideHeight();
   return `translate3d(0, -${base - offsetPx}px, 0)`;
 }
 
@@ -129,8 +265,31 @@ function canMove(direction) {
   return nextIndex >= 0 && nextIndex < sections.length;
 }
 
+function findScrollableTarget(target, direction) {
+  let node = target instanceof Element ? target : target?.parentElement;
+
+  while (node && node !== document.body && node !== document.documentElement) {
+    const style = window.getComputedStyle(node);
+    const allowsScroll = ["auto", "scroll", "overlay"].includes(style.overflowY);
+    const hasOverflow = node.scrollHeight > node.clientHeight + 1;
+
+    if (allowsScroll && hasOverflow) {
+      const atTop = node.scrollTop <= 0;
+      const atBottom = node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
+
+      if ((direction < 0 && !atTop) || (direction > 0 && !atBottom)) {
+        return node;
+      }
+    }
+
+    node = node.parentElement;
+  }
+
+  return null;
+}
+
 function previewDistanceFromIntent(intent, threshold, maxRatio, direction) {
-  const maxDistance = getViewportHeight() * maxRatio;
+  const maxDistance = getSlideHeight() * maxRatio;
   const edgeFactor = canMove(direction) ? 1 : 0.32;
   return maxDistance * edgeFactor * easeOutDistance(Math.abs(intent) / threshold);
 }
@@ -219,11 +378,20 @@ function goToSection(index, options = {}) {
   const force = Boolean(options.force);
   const immediate = Boolean(options.immediate);
   const updateUrl = options.updateUrl !== false;
+  const previousIndex = currentIndex;
+  const previousSectionId = sectionIdAt(previousIndex);
 
   if (nextIndex === currentIndex && !force) return false;
 
+  const sectionId = sectionIdAt(nextIndex);
+  const slideDelta = nextIndex - previousIndex;
+  if (immediate) {
+    clearLogoTravel();
+  } else {
+    playLogoTravel(previousSectionId, sectionId, slideDelta);
+  }
+
   currentIndex = nextIndex;
-  const sectionId = sectionIdAt(currentIndex);
   clearWheelIntent(false);
   applyDeckPosition(immediate);
   setActiveSection(sectionId);
@@ -269,11 +437,17 @@ function initPptNavigation() {
     "wheel",
     (event) => {
       if (event.ctrlKey || Math.abs(event.deltaY) < 2) return;
+
+      const direction = Math.sign(event.deltaY);
+      if (findScrollableTarget(event.target, direction)) {
+        clearWheelIntent(false);
+        return;
+      }
+
       event.preventDefault();
 
       if (isSwitching) return;
 
-      const direction = Math.sign(event.deltaY);
       if (direction !== wheelDirection) {
         wheelIntent = 0;
         wheelDirection = direction;
@@ -326,6 +500,7 @@ function initPptNavigation() {
     (event) => {
       touchStartY = event.touches[0]?.clientY ?? 0;
       touchCurrentY = touchStartY;
+      touchUsedScrollable = false;
     },
     { passive: true },
   );
@@ -339,9 +514,15 @@ function initPptNavigation() {
       const deltaY = touchStartY - touchCurrentY;
       if (Math.abs(deltaY) < 2) return;
 
+      const direction = Math.sign(deltaY);
+      if (findScrollableTarget(event.target, direction)) {
+        touchUsedScrollable = true;
+        settleDeckPreview();
+        return;
+      }
+
       event.preventDefault();
 
-      const direction = Math.sign(deltaY);
       const previewDistance = previewDistanceFromIntent(
         deltaY,
         touchThreshold,
@@ -364,6 +545,12 @@ function initPptNavigation() {
       touchStartY = 0;
       touchCurrentY = 0;
 
+      if (touchUsedScrollable) {
+        touchUsedScrollable = false;
+        settleDeckPreview();
+        return;
+      }
+
       if (Math.abs(deltaY) < touchThreshold) {
         settleDeckPreview();
         return;
@@ -382,6 +569,7 @@ function initPptNavigation() {
   window.addEventListener("touchcancel", () => {
     touchStartY = 0;
     touchCurrentY = 0;
+    touchUsedScrollable = false;
     settleDeckPreview();
   });
 
@@ -393,24 +581,57 @@ function initPptNavigation() {
 }
 
 function initPlatformTabs() {
+  const activatePlatformTab = (switcher, button, shouldFocus = false) => {
+    const platform = button.dataset.platform;
+
+    switcher.querySelectorAll("[data-platform]").forEach((item) => {
+      const isActive = item === button;
+      item.classList.toggle("is-active", isActive);
+      item.setAttribute("aria-selected", String(isActive));
+      item.tabIndex = isActive ? 0 : -1;
+    });
+
+    document.querySelectorAll("[data-platform-pane]").forEach((pane) => {
+      const isActive = pane.dataset.platformPane === platform;
+      pane.classList.toggle("is-active", isActive);
+      pane.hidden = !isActive;
+    });
+
+    if (shouldFocus) {
+      button.focus();
+    }
+  };
+
   document.querySelectorAll(".switcher").forEach((switcher) => {
     switcher.addEventListener("click", (event) => {
       const button = event.target.closest("[data-platform]");
       if (!button) return;
 
-      const platform = button.dataset.platform;
-      switcher.querySelectorAll("[data-platform]").forEach((item) => {
-        const isActive = item === button;
-        item.classList.toggle("is-active", isActive);
-        item.setAttribute("aria-selected", String(isActive));
-        item.tabIndex = isActive ? 0 : -1;
-      });
+      activatePlatformTab(switcher, button);
+    });
 
-      document.querySelectorAll("[data-platform-pane]").forEach((pane) => {
-        const isActive = pane.dataset.platformPane === platform;
-        pane.classList.toggle("is-active", isActive);
-        pane.hidden = !isActive;
-      });
+    switcher.addEventListener("keydown", (event) => {
+      const button = event.target.closest("[data-platform]");
+      if (!button || !switcher.contains(button)) return;
+
+      const tabs = [...switcher.querySelectorAll("[data-platform]")];
+      const currentTabIndex = tabs.indexOf(button);
+      let nextTabIndex = currentTabIndex;
+
+      if (event.key === "ArrowRight") {
+        nextTabIndex = (currentTabIndex + 1) % tabs.length;
+      } else if (event.key === "ArrowLeft") {
+        nextTabIndex = (currentTabIndex - 1 + tabs.length) % tabs.length;
+      } else if (event.key === "Home") {
+        nextTabIndex = 0;
+      } else if (event.key === "End") {
+        nextTabIndex = tabs.length - 1;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      activatePlatformTab(switcher, tabs[nextTabIndex], true);
     });
   });
 }
