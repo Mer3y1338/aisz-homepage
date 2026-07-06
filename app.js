@@ -1,4 +1,4 @@
-const typePhrases = ["Mer3y Sense"];
+const typePhrases = ["Mer3y Sense", "Enjoy LLM"];
 const typeTarget = document.getElementById("typewriter");
 const deck = document.querySelector(".slide-deck");
 const logoTravelLayer = document.querySelector(".logo-travel-layer");
@@ -30,7 +30,7 @@ const logoStageTimers = new Map();
 const travelLogoSections = new Set(["claude", "codex", "gemini"]);
 const logoTravelMs = 860;
 const logoTravelClearMs = 860;
-const logoTravelBuildDelay = 860;
+const logoTravelBuildDelay = 160;
 
 function clampIndex(index) {
   return Math.max(0, Math.min(index, sections.length - 1));
@@ -96,17 +96,17 @@ function getLogoActivationDelay(stageId) {
 function logoAssetForSection(sectionId) {
   return {
     claude: {
-      src: "./assets/claude.svg",
+      src: "/aisz-homepage/assets/claude.svg",
       core: "rgba(217, 119, 87, 0.5)",
       glow: "rgba(217, 119, 87, 0.28)",
     },
     codex: {
-      src: "./assets/openai.svg",
+      src: "/aisz-homepage/assets/openai.svg",
       core: "rgba(25, 25, 25, 0.32)",
       glow: "rgba(25, 25, 25, 0.2)",
     },
     gemini: {
-      src: "./assets/gemini.svg",
+      src: "/aisz-homepage/assets/gemini.svg",
       core: "rgba(127, 109, 242, 0.5)",
       glow: "rgba(111, 125, 255, 0.3)",
     },

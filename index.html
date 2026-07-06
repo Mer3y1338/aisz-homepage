@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#faf9f5" />
     <title>Mer3y Sense</title>
-    <meta name="description" content="Mer3y Sense — AI 编程工具统一网关。" />
+    <meta name="description" content="Mer3y Sense — 面向高强度 AI 工作流的统一 LLM 接入层。" />
     <link rel="icon" type="image/svg+xml" href="./assets/Mer3ylogo.svg" />
     <link rel="preload" href="./assets/fonts/TiemposText/TiemposText-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./assets/fonts/StyreneA/StyreneA-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=20260703-logo-travel-v14" />
+    <link rel="stylesheet" href="./styles.css?v=20260706-tool-tags-v24" />
     <noscript>
       <style>
         html, body { overflow: auto !important; height: auto !important; }
@@ -56,7 +56,7 @@
           <a href="#features" data-nav="features">更多</a>
         </nav>
 
-        <a class="login-link" href="https://meta.mer3y.xyz/" target="_blank" rel="noopener noreferrer">
+        <a class="login-link" href="/sign-in" target="_top">
           登录
         </a>
       </div>
@@ -65,15 +65,15 @@
     <main class="slide-deck">
       <section class="snap-section hero-section" id="home" data-section="home">
         <div class="hero-content">
-          <p class="kicker">AI Coding Gateway</p>
+          <p class="kicker">Unified LLM Access Layer</p>
           <h1>
             <span class="welcome-text">欢迎使用</span>
             <span class="type-wrap"><span id="typewriter"></span><span class="cursor">_</span></span>
           </h1>
           <p class="hero-copy">
-            一个 API key，多个 AI 编程终端<br />
-            <span class="desktop-copy">Claude Code · Codex CLI · Gemini CLI，同一个入口</span>
-            <span class="mobile-copy">Claude Code · Codex CLI ·<br />Gemini CLI，同一个入口</span>
+            为高频 AI 工作流建立统一接入层<br />
+            <span class="desktop-copy">聚合 GPT · Claude · Gemini&nbsp;&nbsp;&nbsp;以一枚密钥贯穿终端、脚本与自动化</span>
+            <span class="mobile-copy">一枚密钥，贯穿终端、脚本与自动化</span>
           </p>
         </div>
         <a class="down-cue" href="#claude" aria-label="继续向下浏览">
@@ -85,14 +85,14 @@
         <div class="section-inner">
           <div class="section-copy">
             <p class="eyebrow">Claude Code</p>
-            <h2>终端里的 Claude，指向同一个网关。</h2>
+            <h2>Claude Code</h2>
             <p>
-              一行配置，把 Claude Code 的流量切到 Mer3y。安装方式不变，日常开发节奏不变。
+              直接在您的终端中释放Claude的澎湃力量。瞬间搜索百万行代码库。将数小时的流程转化为单一命令。您的工具。您的流程。您的代码库,以思维速度进化。
             </p>
             <div class="pill-row">
-              <span>PowerShell</span>
-              <span>Node.js</span>
-              <span>Homebrew</span>
+              <span>代码库感知</span>
+              <span>多文件重构</span>
+              <span>终端代理</span>
             </div>
           </div>
 
@@ -121,9 +121,9 @@
                   <span>install</span>
                   <button type="button" data-copy-target="active-claude">复制</button>
                 </div>
-                <pre class="code-pane is-active" id="pane-powershell" role="tabpanel" aria-labelledby="tab-powershell" data-platform-pane="powershell"><code>irm https://metapi.mer3y.xyz/install.ps1 | iex</code></pre>
+                <pre class="code-pane is-active" id="pane-powershell" role="tabpanel" aria-labelledby="tab-powershell" data-platform-pane="powershell"><code>irm https://claude.ai/install.ps1 | iex</code></pre>
                 <pre class="code-pane" id="pane-node" role="tabpanel" aria-labelledby="tab-node" data-platform-pane="node" hidden><code>npm install -g @anthropic-ai/claude-code</code></pre>
-                <pre class="code-pane" id="pane-homebrew" role="tabpanel" aria-labelledby="tab-homebrew" data-platform-pane="homebrew" hidden><code>brew install claude-code</code></pre>
+                <pre class="code-pane" id="pane-homebrew" role="tabpanel" aria-labelledby="tab-homebrew" data-platform-pane="homebrew" hidden><code>brew install --cask claude-code</code></pre>
               </article>
 
               <article class="code-window">
@@ -134,7 +134,7 @@
                 <pre><code id="claudeSettings">{
   "env": {
     "ANTHROPIC_AUTH_TOKEN": "your-api-key",
-    "ANTHROPIC_BASE_URL": "https://metapi.mer3y.xyz/v1"
+    "ANTHROPIC_BASE_URL": "https://api.mer3y.xyz/v1"
   }
 }</code></pre>
               </article>
@@ -147,14 +147,14 @@
         <div class="section-inner reverse">
           <div class="section-copy">
             <p class="eyebrow">OpenAI / Codex CLI</p>
-            <h2>Codex CLI，同一个 base_url。</h2>
+            <h2>OpenAI Codex</h2>
             <p>
-              Responses API 直连，配置写在本地 TOML 里。模型和鉴权各管各的，改一行切一个。
+              直接在您的终端中释放Codex的推理与编程能力。瞬间理解复杂项目结构。将审查、重构与实现流程转化为单一命令。您的工具。您的流程。您的代码库,以思维速度进化。
             </p>
             <div class="pill-row muted">
-              <span>Responses API</span>
-              <span>TOML</span>
-              <span>Bearer Token</span>
+              <span>深度推理</span>
+              <span>代码审查</span>
+              <span>自动重构</span>
             </div>
           </div>
 
@@ -190,7 +190,7 @@ model_reasoning_effort = "high"
 
 [model_providers.aether]
 name = "OpenAI"
-base_url = "https://metapi.mer3y.xyz/v1"
+base_url = "https://api.mer3y.xyz/v1"
 wire_api = "responses"
 requires_openai_auth = true</code></pre>
               </article>
@@ -213,14 +213,14 @@ requires_openai_auth = true</code></pre>
         <div class="section-inner">
           <div class="section-copy">
             <p class="eyebrow">Gemini CLI</p>
-            <h2>Gemini CLI，三个环境变量。</h2>
+            <h2>Gemini CLI</h2>
             <p>
-              环境变量式接入，适合脚本和临时工作区。BASE_URL + Key + Model，终端即走。
+              直接在您的终端中释放Gemini的RP能力及前端编程能力。瞬间生成、理解并重构界面工程。将原型、实现与优化流程转化为单一命令。您的工具。您的流程。您的代码库,以思维速度进化。
             </p>
             <div class="metric-row" aria-label="接入特点">
-              <span><strong>3</strong> 个变量</span>
-              <span><strong>1</strong> 个入口</span>
-              <span><strong>CLI</strong> 友好</span>
+              <span>前端原型</span>
+              <span>多模态理解</span>
+              <span>RP 增强</span>
             </div>
           </div>
 
@@ -251,12 +251,22 @@ requires_openai_auth = true</code></pre>
               <img class="gemini-sky-logo sky-six" src="./assets/gemini.svg" alt="" aria-hidden="true" />
             </div>
             <div class="stack-cards">
+              <article class="code-window gemini-install-window">
+                <div class="window-bar">
+                  <span>install</span>
+                  <button type="button" data-copy-target="#geminiInstall">复制</button>
+                </div>
+                <pre><code id="geminiInstall">npx @google/gemini-cli
+npm install -g @google/gemini-cli
+brew install gemini-cli</code></pre>
+              </article>
+
               <article class="code-window large env-window">
                 <div class="window-bar">
                   <span>.env</span>
                   <button type="button" data-copy-target="#geminiEnv">复制</button>
                 </div>
-                <pre><code id="geminiEnv">GOOGLE_GEMINI_BASE_URL=https://metapi.mer3y.xyz/v1
+                <pre><code id="geminiEnv">GOOGLE_GEMINI_BASE_URL=https://api.mer3y.xyz/v1
 GEMINI_API_KEY=your-api-key
 GEMINI_MODEL=latest-model-name</code></pre>
               </article>
@@ -268,28 +278,27 @@ GEMINI_MODEL=latest-model-name</code></pre>
       <section class="snap-section feature-section" id="features" data-section="features">
         <div class="features-inner">
           <div class="section-copy centered">
-            <p class="eyebrow">进度</p>
-            <h2>做完的就是能用的，剩下的还在写。</h2>
+            <h2>把模型、密钥与终端体验<br />收束为一层。</h2>
             <p>
-              三家主流 AI 编程终端已接入。协同功能在做。
+              Mer3y Sense 以模型广场为组织入口，将能力目录、分组策略、倍率体系与客户端配置统一管理，让 LLM 使用从临时拼接变为可持续的基础设施。
             </p>
           </div>
 
           <div class="feature-grid">
             <article class="feature-card">
               <span class="status done">已完成</span>
-              <h3>Claude / OpenAI / Gemini</h3>
-              <p>三家 API 已通，开箱即用。</p>
+              <h3>模型目录</h3>
+              <p>GPT、Claude、Gemini 等能力以统一视图呈现，按场景选择模型与路由。</p>
             </article>
             <article class="feature-card">
               <span class="status done">已完成</span>
-              <h3>格式转换</h3>
-              <p>API 格式互转，可自定义请求头。</p>
+              <h3>策略编排</h3>
+              <p>分组、倍率、密钥与消费集中管理，适配不同强度的工作负载。</p>
             </article>
             <article class="feature-card">
               <span class="status progress">开发中</span>
-              <h3>协同开发</h3>
-              <p>远程开发、Skill 分享、Playground。</p>
+              <h3>兼容层</h3>
+              <p>面向 CLI、API 与自动化工具，持续补齐更完整的 OpenAI 兼容体验。</p>
             </article>
           </div>
         </div>
@@ -304,6 +313,6 @@ GEMINI_MODEL=latest-model-name</code></pre>
       <a href="#features" data-dot="features"><span>更多</span></a>
     </aside>
 
-    <script src="./app.js?v=20260703-logo-travel-v14"></script>
+    <script src="./app.js?v=20260706-tool-tags-v24"></script>
   </body>
 </html>

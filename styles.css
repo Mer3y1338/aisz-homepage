@@ -1,6 +1,6 @@
 @font-face {
   font-family: "TiemposText";
-  src: url("./assets/fonts/TiemposText/TiemposText-Regular.woff2") format("woff2");
+  src: url("/aisz-homepage/assets/fonts/TiemposText/TiemposText-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: "TiemposText";
-  src: url("./assets/fonts/TiemposText/TiemposText-Medium.woff2") format("woff2");
+  src: url("/aisz-homepage/assets/fonts/TiemposText/TiemposText-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: "StyreneA";
-  src: url("./assets/fonts/StyreneA/StyreneA-Regular.woff2") format("woff2");
+  src: url("/aisz-homepage/assets/fonts/StyreneA/StyreneA-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -24,7 +24,7 @@
 
 @font-face {
   font-family: "StyreneA";
-  src: url("./assets/fonts/StyreneA/StyreneA-Medium.woff2") format("woff2");
+  src: url("/aisz-homepage/assets/fonts/StyreneA/StyreneA-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -50,7 +50,7 @@
   --shadow: 0 26px 70px rgba(61, 57, 41, 0.13);
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --serif: "TiemposText", Georgia, "Times New Roman", serif;
-  --sans: "StyreneA", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --sans: var(--serif);
 }
 
 * {
@@ -75,7 +75,7 @@ body {
     radial-gradient(circle at 50% 42%, rgba(212, 162, 127, 0.2), transparent 30rem),
     linear-gradient(180deg, var(--paper-soft), var(--paper) 34%, #f7f4ec 100%);
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--serif);
   letter-spacing: 0;
 }
 
@@ -425,21 +425,22 @@ body:not([data-current="home"]) .aether-symbol-layer {
 }
 
 .claude-emblem {
-  --provider-logo: url("./assets/claude.svg");
+  --provider-logo: url("/aisz-homepage/assets/claude.svg");
+  --logo-prelude-duration: 640ms;
   --provider-color: #d97757;
   --provider-glow: rgba(217, 119, 87, 0.34);
   --logo-fill: #d97757;
 }
 
 .openai-emblem {
-  --provider-logo: url("./assets/openai.svg");
   --provider-color: #191919;
   --provider-glow: rgba(25, 25, 25, 0.22);
   --logo-fill: #191919;
 }
 
 .gemini-emblem {
-  --provider-logo: url("./assets/gemini.svg");
+  --provider-logo: url("/aisz-homepage/assets/gemini.svg");
+  --logo-prelude-duration: 640ms;
   --provider-color: #7f6df2;
   --provider-glow: rgba(111, 125, 255, 0.34);
   --logo-fill: linear-gradient(135deg, #4285f4 0%, #7f6df2 46%, #d9659f 100%);
@@ -468,15 +469,39 @@ body:not([data-current="home"]) .aether-symbol-layer {
   animation: emblem-stage-drift 6.8s ease-in-out infinite;
 }
 
-.model-emblem::before,
+.claude-emblem::before,
+.gemini-emblem::before {
+  position: absolute;
+  inset: 14%;
+  z-index: 1;
+  display: block;
+  content: "";
+  pointer-events: none;
+  opacity: 0;
+  background: center / contain no-repeat var(--provider-logo);
+  filter: blur(0.2px) drop-shadow(0 12px 24px var(--provider-glow));
+  transform: translateZ(0) scale(0.985);
+  transition:
+    opacity 320ms ease,
+    transform 480ms ease,
+    filter 480ms ease;
+}
+
+.claude-emblem.is-travel-target::before,
+.gemini-emblem.is-travel-target::before {
+  opacity: 0.2;
+  transform: translateZ(0) scale(1);
+}
+
+.claude-emblem.is-active::before,
+.gemini-emblem.is-active::before {
+  animation: provider-logo-prelude var(--logo-prelude-duration) cubic-bezier(0.2, 0.72, 0.18, 1) both;
+}
+
 .model-emblem::after {
   position: absolute;
   content: "";
   pointer-events: none;
-}
-
-.claude-emblem::before {
-  display: none;
 }
 
 .claude-emblem::after {
@@ -569,10 +594,11 @@ body:not([data-current="home"]) .aether-symbol-layer {
 
 .claude-emblem.is-active .provider-build-seg {
   animation-duration: 2.02s;
+  animation-delay: var(--logo-prelude-duration);
 }
 
 .gemini-emblem.is-active .provider-build-seg {
-  animation-delay: 120ms;
+  animation-delay: calc(var(--logo-prelude-duration) + 120ms);
 }
 
 .claude-emblem.is-active .provider-build-fill,
@@ -581,20 +607,20 @@ body:not([data-current="home"]) .aether-symbol-layer {
 }
 
 .claude-emblem.is-active .provider-build-fill {
-  animation-delay: 2.08s;
+  animation-delay: calc(var(--logo-prelude-duration) + 2.08s);
 }
 
 .gemini-emblem.is-active .provider-build-fill {
-  animation-delay: 1.74s;
+  animation-delay: calc(var(--logo-prelude-duration) + 1.74s);
 }
 
 .claude-emblem.is-active .provider-build-svg,
 .gemini-emblem.is-active .provider-build-svg {
-  animation: provider-breathe 3.8s ease-in-out infinite 2.32s;
+  animation: provider-breathe 3.8s ease-in-out infinite calc(var(--logo-prelude-duration) + 2.32s);
 }
 
 .claude-emblem.is-active .provider-build-svg {
-  animation: provider-breathe 3.8s ease-in-out infinite 2.66s;
+  animation: provider-breathe 3.8s ease-in-out infinite calc(var(--logo-prelude-duration) + 2.66s);
 }
 
 .openai-emblem.is-active .openai-build-seg {
@@ -644,8 +670,8 @@ body:not([data-current="home"]) .aether-symbol-layer {
 }
 
 .model-emblem.is-active .emblem-symbol {
-  opacity: 0;
-  animation: provider-fill-reveal 900ms ease-out 420ms forwards;
+  opacity: 0.16;
+  animation: provider-fill-reveal 760ms ease-out 180ms forwards;
 }
 
 .emblem-ripple {
@@ -718,7 +744,7 @@ body:not([data-current="home"]) .aether-symbol-layer {
   animation-name: gemini-sky-appear, gemini-sky-drift;
   animation-duration: 680ms, var(--sky-duration);
   animation-timing-function: cubic-bezier(0.2, 0.72, 0.18, 1), ease-in-out;
-  animation-delay: var(--sky-delay), calc(var(--sky-delay) + 680ms);
+  animation-delay: calc(var(--logo-prelude-duration) + var(--sky-delay)), calc(var(--logo-prelude-duration) + var(--sky-delay) + 680ms);
   animation-iteration-count: 1, infinite;
   animation-fill-mode: both, none;
 }
@@ -1006,6 +1032,16 @@ main {
   overflow-wrap: anywhere;
 }
 
+.content-section .section-copy h2 {
+  font-family: "TiemposText", "Bodoni 72", Didot, Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-wrap: balance;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis-weight: auto;
+}
+
 .section-copy p:not(.eyebrow) {
   max-width: 560px;
   margin: 24px 0 0;
@@ -1138,7 +1174,20 @@ main {
 
 .code-window.compact {
   width: min(420px, 100%);
+  min-height: 132px;
   justify-self: end;
+}
+
+.code-window.compact pre {
+  padding-block: 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+#codex .code-window.large pre {
+  padding-block: 12px;
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .window-bar {
@@ -1199,6 +1248,13 @@ pre {
   display: block;
 }
 
+
+.gemini-install-window pre {
+  padding-block: 13px;
+  font-size: clamp(12px, 1.25vw, 13px);
+  line-height: 1.55;
+}
+
 .env-window pre {
   font-size: clamp(13px, 1.6vw, 16px);
 }
@@ -1206,6 +1262,24 @@ pre {
 .feature-section {
   display: grid;
   align-items: center;
+}
+
+
+.feature-section .section-copy.centered {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.feature-section .section-copy.centered h2 {
+  max-width: 760px;
+}
+
+.feature-section .section-copy.centered p:not(.eyebrow) {
+  max-width: 760px;
+  margin: 24px auto 0;
+  text-align: center;
 }
 
 .features-inner {
@@ -1526,6 +1600,24 @@ pre {
   100% {
     fill-opacity: 1;
     opacity: 1;
+  }
+}
+
+@keyframes provider-logo-prelude {
+  0% {
+    opacity: 0;
+    transform: translateZ(0) scale(0.94);
+    filter: blur(3px) drop-shadow(0 0 0 var(--provider-glow));
+  }
+  64% {
+    opacity: 0.22;
+    transform: translateZ(0) scale(1.035);
+    filter: blur(0.4px) drop-shadow(0 14px 28px var(--provider-glow));
+  }
+  100% {
+    opacity: 0.2;
+    transform: translateZ(0) scale(1);
+    filter: blur(0.2px) drop-shadow(0 12px 24px var(--provider-glow));
   }
 }
 
