@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#faf9f5" />
     <title>Mer3y Sense</title>
-    <meta name="description" content="Mer3y Sense — 面向高强度 AI 工作流的统一 LLM 接入层。" />
+    <meta name="description" content="Mer3y Sense — 一层安静可靠的统一 LLM 接入，连接 Claude、GPT 与 Gemini，一枚密钥贯穿终端、脚本与自动化。" />
     <link rel="icon" type="image/svg+xml" href="./assets/Mer3ylogo.svg" />
     <link rel="preload" href="./assets/fonts/TiemposText/TiemposText-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./assets/fonts/TiemposText/TiemposText-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./assets/fonts/StyreneA/StyreneA-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=20260706-tool-tags-v24" />
+    <link rel="preload" href="./assets/fonts/StyreneA/StyreneA-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=20260710-claude-design-v1" />
     <noscript>
       <style>
         html, body { overflow: auto !important; height: auto !important; }
-        .slide-deck { display: block !important; transform: none !important; transition: none !important; }
+        .slide-deck { display: block !important; position: static !important; height: auto !important; transform: none !important; transition: none !important; }
         .snap-section { height: auto !important; min-height: auto !important; padding: 60px 24px !important; }
+        .aether-logo-fixed, .logo-travel-layer { display: none !important; }
       </style>
     </noscript>
   </head>
@@ -25,7 +28,6 @@
       <div class="aether-symbol-layer">
         <span class="logo-ripple ripple-one"></span>
         <span class="logo-ripple ripple-two"></span>
-        <img class="logo-fill" src="./assets/Mer3ylogo.svg" alt="" aria-hidden="true" />
         <svg class="mer3y-build-svg" viewBox="0 0 1254 1254" role="presentation">
           <g class="mer3y-build-lines">
             <path class="mer3y-build-line line-shell" pathLength="1" d="M 273 174 L 234 478 L 211 638 L 192 790 L 177 894 L 167 978 L 152 1078 L 151 1093 L 239 1037 L 349 970 L 386 664 L 410 694 L 536 863 L 626 989 L 628 989 L 730 847 L 866 665 L 902 970 L 978 1015 L 1104 1093 L 1105 1092 L 1076 894 L 1041 630 L 1015 448 L 980 174 L 946 218 L 627 654 L 368 300 Z" />
@@ -71,8 +73,8 @@
             <span class="type-wrap"><span id="typewriter"></span><span class="cursor">_</span></span>
           </h1>
           <p class="hero-copy">
-            为高频 AI 工作流建立统一接入层<br />
-            <span class="desktop-copy">聚合 GPT · Claude · Gemini&nbsp;&nbsp;&nbsp;以一枚密钥贯穿终端、脚本与自动化</span>
+            一层安静可靠的接入，通向每一个前沿模型<br />
+            <span class="desktop-copy">Claude · GPT · Gemini 汇于一处&nbsp;&nbsp;&nbsp;一枚密钥，贯穿终端、脚本与自动化</span>
             <span class="mobile-copy">一枚密钥，贯穿终端、脚本与自动化</span>
           </p>
         </div>
@@ -85,14 +87,14 @@
         <div class="section-inner">
           <div class="section-copy">
             <p class="eyebrow">Claude Code</p>
-            <h2>Claude Code</h2>
+            <h2>以思维的速度编码。</h2>
             <p>
-              直接在您的终端中释放Claude的澎湃力量。瞬间搜索百万行代码库。将数小时的流程转化为单一命令。您的工具。您的流程。您的代码库,以思维速度进化。
+              Claude 常驻在你的终端。它了解整个代码库，百万行代码也能即刻检索；数小时的流程，收拢成一条命令。你的工具，你的流程，你的节奏。
             </p>
             <div class="pill-row">
               <span>代码库感知</span>
               <span>多文件重构</span>
-              <span>终端代理</span>
+              <span>代理式工作流</span>
             </div>
           </div>
 
@@ -101,9 +103,6 @@
               <img class="emblem-ripple r-one" src="./assets/claude.svg" alt="" aria-hidden="true" />
               <img class="emblem-ripple r-two" src="./assets/claude.svg" alt="" aria-hidden="true" />
               <img class="emblem-ripple r-three" src="./assets/claude.svg" alt="" aria-hidden="true" />
-              <span class="emblem-core">
-                <img class="emblem-symbol" src="./assets/claude.svg" alt="" aria-hidden="true" />
-              </span>
               <svg class="provider-build-svg claude-build-svg" viewBox="0 0 24 24" role="presentation">
                 <path class="provider-build-seg" pathLength="1" d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z" />
                 <path class="provider-build-fill" d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z" />
@@ -119,7 +118,7 @@
               <article class="code-window claude-code">
                 <div class="window-bar">
                   <span>install</span>
-                  <button type="button" data-copy-target="active-claude">复制</button>
+                  <button type="button" data-copy-target="active-pane">复制</button>
                 </div>
                 <pre class="code-pane is-active" id="pane-powershell" role="tabpanel" aria-labelledby="tab-powershell" data-platform-pane="powershell"><code>irm https://claude.ai/install.ps1 | iex</code></pre>
                 <pre class="code-pane" id="pane-node" role="tabpanel" aria-labelledby="tab-node" data-platform-pane="node" hidden><code>npm install -g @anthropic-ai/claude-code</code></pre>
@@ -147,9 +146,9 @@
         <div class="section-inner reverse">
           <div class="section-copy">
             <p class="eyebrow">OpenAI / Codex CLI</p>
-            <h2>OpenAI Codex</h2>
+            <h2>先推理，再动手。</h2>
             <p>
-              直接在您的终端中释放Codex的推理与编程能力。瞬间理解复杂项目结构。将审查、重构与实现流程转化为单一命令。您的工具。您的流程。您的代码库,以思维速度进化。
+              Codex 擅长深思。复杂的项目结构、纠缠的依赖，它都能沉住气理清，再交出可靠的审查、重构与实现。适合那些值得多想一步的问题。
             </p>
             <div class="pill-row muted">
               <span>深度推理</span>
@@ -213,9 +212,9 @@ requires_openai_auth = true</code></pre>
         <div class="section-inner">
           <div class="section-copy">
             <p class="eyebrow">Gemini CLI</p>
-            <h2>Gemini CLI</h2>
+            <h2>从想法，到界面。</h2>
             <p>
-              直接在您的终端中释放Gemini的RP能力及前端编程能力。瞬间生成、理解并重构界面工程。将原型、实现与优化流程转化为单一命令。您的工具。您的流程。您的代码库,以思维速度进化。
+              Gemini 长于表达。一句描述可以成为原型，原型可以长成完整的前端工程；多模态理解让它看得懂设计稿，自然的对话感也让角色扮演更生动。
             </p>
             <div class="metric-row" aria-label="接入特点">
               <span>前端原型</span>
@@ -226,12 +225,6 @@ requires_openai_auth = true</code></pre>
 
           <div class="code-stack">
             <div class="model-emblem gemini-emblem" data-logo-stage="gemini" aria-hidden="true">
-              <span class="emblem-ripple r-one"></span>
-              <span class="emblem-ripple r-two"></span>
-              <span class="emblem-ripple r-three"></span>
-              <span class="emblem-core">
-                <img class="emblem-symbol" src="./assets/gemini.svg" alt="" aria-hidden="true" />
-              </span>
               <svg class="provider-build-svg gemini-build-svg" viewBox="0 0 24 24" role="presentation">
                 <defs>
                   <linearGradient id="geminiBuildGradient" x1="1.5" y1="3" x2="22.5" y2="21" gradientUnits="userSpaceOnUse">
@@ -251,14 +244,20 @@ requires_openai_auth = true</code></pre>
               <img class="gemini-sky-logo sky-six" src="./assets/gemini.svg" alt="" aria-hidden="true" />
             </div>
             <div class="stack-cards">
+              <div class="switcher" role="tablist" aria-label="Gemini 安装方式">
+                <button class="is-active" id="tab-gemini-npx" type="button" role="tab" aria-selected="true" aria-controls="pane-gemini-npx" data-platform="gemini-npx">npx</button>
+                <button id="tab-gemini-npm" type="button" role="tab" aria-selected="false" aria-controls="pane-gemini-npm" tabindex="-1" data-platform="gemini-npm">npm</button>
+                <button id="tab-gemini-brew" type="button" role="tab" aria-selected="false" aria-controls="pane-gemini-brew" tabindex="-1" data-platform="gemini-brew">Homebrew</button>
+              </div>
+
               <article class="code-window gemini-install-window">
                 <div class="window-bar">
                   <span>install</span>
-                  <button type="button" data-copy-target="#geminiInstall">复制</button>
+                  <button type="button" data-copy-target="active-pane">复制</button>
                 </div>
-                <pre><code id="geminiInstall">npx @google/gemini-cli
-npm install -g @google/gemini-cli
-brew install gemini-cli</code></pre>
+                <pre class="code-pane is-active" id="pane-gemini-npx" role="tabpanel" aria-labelledby="tab-gemini-npx" data-platform-pane="gemini-npx"><code>npx @google/gemini-cli</code></pre>
+                <pre class="code-pane" id="pane-gemini-npm" role="tabpanel" aria-labelledby="tab-gemini-npm" data-platform-pane="gemini-npm" hidden><code>npm install -g @google/gemini-cli</code></pre>
+                <pre class="code-pane" id="pane-gemini-brew" role="tabpanel" aria-labelledby="tab-gemini-brew" data-platform-pane="gemini-brew" hidden><code>brew install gemini-cli</code></pre>
               </article>
 
               <article class="code-window large env-window">
@@ -280,7 +279,7 @@ GEMINI_MODEL=latest-model-name</code></pre>
           <div class="section-copy centered">
             <h2>把模型、密钥与终端体验<br />收束为一层。</h2>
             <p>
-              Mer3y Sense 以模型广场为组织入口，将能力目录、分组策略、倍率体系与客户端配置统一管理，让 LLM 使用从临时拼接变为可持续的基础设施。
+              Mer3y Sense 以模型广场为入口，把模型目录、分组策略、倍率体系与客户端配置放在同一处打理。少一些临时拼接，多一层可以长期托付的基础设施。
             </p>
           </div>
 
@@ -288,17 +287,17 @@ GEMINI_MODEL=latest-model-name</code></pre>
             <article class="feature-card">
               <span class="status done">已完成</span>
               <h3>模型目录</h3>
-              <p>GPT、Claude、Gemini 等能力以统一视图呈现，按场景选择模型与路由。</p>
+              <p>Claude、GPT 与 Gemini 汇于同一视图，按场景选择模型与路由，而不必在密钥之间辗转。</p>
             </article>
             <article class="feature-card">
               <span class="status done">已完成</span>
               <h3>策略编排</h3>
-              <p>分组、倍率、密钥与消费集中管理，适配不同强度的工作负载。</p>
+              <p>分组、倍率、密钥与消费集中管理，从容适配不同强度的工作负载。</p>
             </article>
             <article class="feature-card">
               <span class="status progress">开发中</span>
               <h3>兼容层</h3>
-              <p>面向 CLI、API 与自动化工具，持续补齐更完整的 OpenAI 兼容体验。</p>
+              <p>面向 CLI、API 与自动化工具，持续打磨更完整的 OpenAI 兼容体验。</p>
             </article>
           </div>
         </div>
@@ -313,6 +312,6 @@ GEMINI_MODEL=latest-model-name</code></pre>
       <a href="#features" data-dot="features"><span>更多</span></a>
     </aside>
 
-    <script src="./app.js?v=20260706-tool-tags-v24"></script>
+    <script src="./app.js?v=20260710-anthropic-copy-v1"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-const typePhrases = ["Mer3y Sense", "Enjoy LLM"];
+const typePhrases = ["Mer3y Sense", "统一模型接入层"];
 const typeTarget = document.getElementById("typewriter");
 const deck = document.querySelector(".slide-deck");
 const logoTravelLayer = document.querySelector(".logo-travel-layer");
@@ -96,17 +96,17 @@ function getLogoActivationDelay(stageId) {
 function logoAssetForSection(sectionId) {
   return {
     claude: {
-      src: "/aisz-homepage/assets/claude.svg",
+      src: "./assets/claude.svg",
       core: "rgba(217, 119, 87, 0.5)",
       glow: "rgba(217, 119, 87, 0.28)",
     },
     codex: {
-      src: "/aisz-homepage/assets/openai.svg",
-      core: "rgba(25, 25, 25, 0.32)",
-      glow: "rgba(25, 25, 25, 0.2)",
+      src: "./assets/openai.svg",
+      core: "rgba(20, 20, 19, 0.32)",
+      glow: "rgba(20, 20, 19, 0.2)",
     },
     gemini: {
-      src: "/aisz-homepage/assets/gemini.svg",
+      src: "./assets/gemini.svg",
       core: "rgba(127, 109, 242, 0.5)",
       glow: "rgba(111, 125, 255, 0.3)",
     },
@@ -115,7 +115,7 @@ function logoAssetForSection(sectionId) {
 
 function logoMotionRect(sectionId, slideDelta = 0) {
   const stage = document.querySelector(`[data-logo-stage="${sectionId}"]`);
-  const logo = stage?.querySelector(".provider-build-svg, .openai-build-svg, .emblem-core");
+  const logo = stage?.querySelector(".provider-build-svg, .openai-build-svg");
   if (!stage || !logo) return null;
 
   const rect = logo.getBoundingClientRect();
@@ -200,6 +200,7 @@ function setActiveSection(sectionId) {
 
   sections.forEach((section) => {
     const isActive = section.dataset.section === sectionId;
+    section.inert = !isActive;
     if (isActive) {
       restartClass(section, "is-active-section");
       return;
@@ -361,10 +362,14 @@ function applyDeckPosition(immediate = false) {
   }
 }
 
-function updateHash(sectionId) {
+function updateHash(sectionId, { replace = false } = {}) {
   const nextHash = `#${sectionId}`;
   if (window.location.hash === nextHash) return;
-  window.history.pushState(null, "", nextHash);
+  if (replace) {
+    window.history.replaceState(null, "", nextHash);
+  } else {
+    window.history.pushState(null, "", nextHash);
+  }
 }
 
 function unlockAfterTransition() {
@@ -375,13 +380,12 @@ function unlockAfterTransition() {
 
 function goToSection(index, options = {}) {
   const nextIndex = clampIndex(index);
-  const force = Boolean(options.force);
   const immediate = Boolean(options.immediate);
   const updateUrl = options.updateUrl !== false;
   const previousIndex = currentIndex;
   const previousSectionId = sectionIdAt(previousIndex);
 
-  if (nextIndex === currentIndex && !force) return false;
+  if (nextIndex === currentIndex) return false;
 
   const sectionId = sectionIdAt(nextIndex);
   const slideDelta = nextIndex - previousIndex;
@@ -397,7 +401,7 @@ function goToSection(index, options = {}) {
   setActiveSection(sectionId);
 
   if (updateUrl) {
-    updateHash(sectionId);
+    updateHash(sectionId, { replace: Boolean(options.replaceUrl) });
   }
 
   if (!immediate) {
@@ -414,7 +418,13 @@ function goToSectionId(sectionId, options = {}) {
 
 function moveBy(delta) {
   if (isSwitching) return;
-  goToSection(currentIndex + delta);
+  goToSection(currentIndex + delta, { replaceUrl: true });
+}
+
+function normalizeWheelDelta(event) {
+  if (event.deltaMode === 1) return event.deltaY * 16;
+  if (event.deltaMode === 2) return event.deltaY * getSlideHeight();
+  return event.deltaY;
 }
 
 function initPptNavigation() {
@@ -436,9 +446,12 @@ function initPptNavigation() {
   window.addEventListener(
     "wheel",
     (event) => {
-      if (event.ctrlKey || Math.abs(event.deltaY) < 2) return;
+      if (event.ctrlKey) return;
 
-      const direction = Math.sign(event.deltaY);
+      const deltaY = normalizeWheelDelta(event);
+      if (Math.abs(deltaY) < 2) return;
+
+      const direction = Math.sign(deltaY);
       if (findScrollableTarget(event.target, direction)) {
         clearWheelIntent(false);
         return;
@@ -453,7 +466,7 @@ function initPptNavigation() {
         wheelDirection = direction;
       }
 
-      wheelIntent += event.deltaY;
+      wheelIntent += deltaY;
       window.clearTimeout(wheelResetTimer);
       wheelResetTimer = window.setTimeout(() => {
         clearWheelIntent();
@@ -470,10 +483,9 @@ function initPptNavigation() {
       if (Math.abs(wheelIntent) < wheelThreshold) return;
 
       if (canMove(direction)) {
-        goToSection(currentIndex + direction);
+        goToSection(currentIndex + direction, { replaceUrl: true });
       } else {
         clearWheelIntent();
-        isSwitching = false;
       }
     },
     { passive: false },
@@ -574,8 +586,7 @@ function initPptNavigation() {
   });
 
   window.addEventListener("hashchange", () => {
-    const targetId = window.location.hash.replace("#", "");
-    if (!targetId) return;
+    const targetId = window.location.hash.replace("#", "") || sectionIdAt(0);
     goToSectionId(targetId, { updateUrl: false });
   });
 }
@@ -583,6 +594,7 @@ function initPptNavigation() {
 function initPlatformTabs() {
   const activatePlatformTab = (switcher, button, shouldFocus = false) => {
     const platform = button.dataset.platform;
+    const scope = switcher.closest(".stack-cards") || document;
 
     switcher.querySelectorAll("[data-platform]").forEach((item) => {
       const isActive = item === button;
@@ -591,7 +603,7 @@ function initPlatformTabs() {
       item.tabIndex = isActive ? 0 : -1;
     });
 
-    document.querySelectorAll("[data-platform-pane]").forEach((pane) => {
+    scope.querySelectorAll("[data-platform-pane]").forEach((pane) => {
       const isActive = pane.dataset.platformPane === platform;
       pane.classList.toggle("is-active", isActive);
       pane.hidden = !isActive;
@@ -636,18 +648,47 @@ function initPlatformTabs() {
   });
 }
 
+async function writeClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // fall through to the legacy path (insecure context, denied permission, …)
+    }
+  }
+
+  const helper = document.createElement("textarea");
+  helper.value = text;
+  helper.setAttribute("readonly", "");
+  helper.style.position = "fixed";
+  helper.style.opacity = "0";
+  document.body.append(helper);
+  helper.select();
+
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch {
+    copied = false;
+  }
+  helper.remove();
+  return copied;
+}
+
 async function copyText(button) {
   const target = button.dataset.copyTarget;
   const node =
-    target === "active-claude"
-      ? document.querySelector(".claude-code .code-pane.is-active code")
+    target === "active-pane"
+      ? button.closest(".code-window")?.querySelector(".code-pane.is-active code")
       : document.querySelector(target);
 
   if (!node) return;
 
   const text = node.textContent.trim();
-  try {
-    await navigator.clipboard.writeText(text);
+  const copied = await writeClipboard(text);
+
+  if (copied) {
     button.classList.add("is-copied");
     const original = button.textContent;
     button.textContent = "已复制";
@@ -655,7 +696,7 @@ async function copyText(button) {
       button.classList.remove("is-copied");
       button.textContent = original;
     }, 1300);
-  } catch {
+  } else {
     button.textContent = "复制失败";
     window.setTimeout(() => {
       button.textContent = "复制";
@@ -674,10 +715,7 @@ function initInitialSection() {
   currentIndex = initialId ? indexForSection(initialId) : 0;
   applyDeckPosition(true);
   setActiveSection(sectionIdAt(currentIndex));
-
-  if (!initialId) {
-    updateHash(sectionIdAt(currentIndex));
-  }
+  updateHash(sectionIdAt(currentIndex), { replace: true });
 }
 
 initInitialSection();
