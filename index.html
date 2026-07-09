@@ -11,7 +11,7 @@
     <link rel="preload" href="./assets/fonts/TiemposText/TiemposText-Medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./assets/fonts/StyreneA/StyreneA-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./assets/fonts/StyreneA/StyreneA-Medium.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=20260710-claude-design-v1" />
+    <link rel="stylesheet" href="./styles.css?v=20260710-claude-polish-v1" />
     <noscript>
       <style>
         html, body { overflow: auto !important; height: auto !important; }
@@ -120,9 +120,9 @@
                   <span>install</span>
                   <button type="button" data-copy-target="active-pane">复制</button>
                 </div>
-                <pre class="code-pane is-active" id="pane-powershell" role="tabpanel" aria-labelledby="tab-powershell" data-platform-pane="powershell"><code>irm https://claude.ai/install.ps1 | iex</code></pre>
-                <pre class="code-pane" id="pane-node" role="tabpanel" aria-labelledby="tab-node" data-platform-pane="node" hidden><code>npm install -g @anthropic-ai/claude-code</code></pre>
-                <pre class="code-pane" id="pane-homebrew" role="tabpanel" aria-labelledby="tab-homebrew" data-platform-pane="homebrew" hidden><code>brew install --cask claude-code</code></pre>
+                <pre class="code-pane is-active" id="pane-powershell" role="tabpanel" aria-labelledby="tab-powershell" data-platform-pane="powershell"><code><span class="tok-fn">irm</span> <span class="tok-s">https://claude.ai/install.ps1</span> <span class="tok-p">|</span> <span class="tok-fn">iex</span></code></pre>
+                <pre class="code-pane" id="pane-node" role="tabpanel" aria-labelledby="tab-node" data-platform-pane="node" hidden><code><span class="tok-fn">npm</span> install <span class="tok-p">-g</span> <span class="tok-s">@anthropic-ai/claude-code</span></code></pre>
+                <pre class="code-pane" id="pane-homebrew" role="tabpanel" aria-labelledby="tab-homebrew" data-platform-pane="homebrew" hidden><code><span class="tok-fn">brew</span> install <span class="tok-p">--cask</span> <span class="tok-s">claude-code</span></code></pre>
               </article>
 
               <article class="code-window">
@@ -130,12 +130,12 @@
                   <span>~/.claude/settings.json</span>
                   <button type="button" data-copy-target="#claudeSettings">复制</button>
                 </div>
-                <pre><code id="claudeSettings">{
-  "env": {
-    "ANTHROPIC_AUTH_TOKEN": "your-api-key",
-    "ANTHROPIC_BASE_URL": "https://api.mer3y.xyz/v1"
-  }
-}</code></pre>
+                <pre><code id="claudeSettings"><span class="tok-p">{</span>
+  <span class="tok-k">"env"</span><span class="tok-p">: {</span>
+    <span class="tok-k">"ANTHROPIC_AUTH_TOKEN"</span><span class="tok-p">:</span> <span class="tok-s">"your-api-key"</span><span class="tok-p">,</span>
+    <span class="tok-k">"ANTHROPIC_BASE_URL"</span><span class="tok-p">:</span> <span class="tok-s">"https://api.mer3y.xyz/v1"</span>
+  <span class="tok-p">}</span>
+<span class="tok-p">}</span></code></pre>
               </article>
             </div>
           </div>
@@ -183,15 +183,15 @@
                   <span>~/.codex/config.toml</span>
                   <button type="button" data-copy-target="#codexConfig">复制</button>
                 </div>
-                <pre><code id="codexConfig">model_provider = "aether"
-model = "latest-model-name"
-model_reasoning_effort = "high"
+                <pre><code id="codexConfig"><span class="tok-k">model_provider</span> <span class="tok-p">=</span> <span class="tok-s">"aether"</span>
+<span class="tok-k">model</span> <span class="tok-p">=</span> <span class="tok-s">"latest-model-name"</span>
+<span class="tok-k">model_reasoning_effort</span> <span class="tok-p">=</span> <span class="tok-s">"high"</span>
 
-[model_providers.aether]
-name = "OpenAI"
-base_url = "https://api.mer3y.xyz/v1"
-wire_api = "responses"
-requires_openai_auth = true</code></pre>
+<span class="tok-fn">[model_providers.aether]</span>
+<span class="tok-k">name</span> <span class="tok-p">=</span> <span class="tok-s">"OpenAI"</span>
+<span class="tok-k">base_url</span> <span class="tok-p">=</span> <span class="tok-s">"https://api.mer3y.xyz/v1"</span>
+<span class="tok-k">wire_api</span> <span class="tok-p">=</span> <span class="tok-s">"responses"</span>
+<span class="tok-k">requires_openai_auth</span> <span class="tok-p">=</span> <span class="tok-fn">true</span></code></pre>
               </article>
 
               <article class="code-window compact">
@@ -199,9 +199,9 @@ requires_openai_auth = true</code></pre>
                   <span>auth.json</span>
                   <button type="button" data-copy-target="#codexAuth">复制</button>
                 </div>
-                <pre><code id="codexAuth">{
-  "OPENAI_API_KEY": "your-api-key"
-}</code></pre>
+                <pre><code id="codexAuth"><span class="tok-p">{</span>
+  <span class="tok-k">"OPENAI_API_KEY"</span><span class="tok-p">:</span> <span class="tok-s">"your-api-key"</span>
+<span class="tok-p">}</span></code></pre>
               </article>
             </div>
           </div>
@@ -255,9 +255,9 @@ requires_openai_auth = true</code></pre>
                   <span>install</span>
                   <button type="button" data-copy-target="active-pane">复制</button>
                 </div>
-                <pre class="code-pane is-active" id="pane-gemini-npx" role="tabpanel" aria-labelledby="tab-gemini-npx" data-platform-pane="gemini-npx"><code>npx @google/gemini-cli</code></pre>
-                <pre class="code-pane" id="pane-gemini-npm" role="tabpanel" aria-labelledby="tab-gemini-npm" data-platform-pane="gemini-npm" hidden><code>npm install -g @google/gemini-cli</code></pre>
-                <pre class="code-pane" id="pane-gemini-brew" role="tabpanel" aria-labelledby="tab-gemini-brew" data-platform-pane="gemini-brew" hidden><code>brew install gemini-cli</code></pre>
+                <pre class="code-pane is-active" id="pane-gemini-npx" role="tabpanel" aria-labelledby="tab-gemini-npx" data-platform-pane="gemini-npx"><code><span class="tok-fn">npx</span> <span class="tok-s">@google/gemini-cli</span></code></pre>
+                <pre class="code-pane" id="pane-gemini-npm" role="tabpanel" aria-labelledby="tab-gemini-npm" data-platform-pane="gemini-npm" hidden><code><span class="tok-fn">npm</span> install <span class="tok-p">-g</span> <span class="tok-s">@google/gemini-cli</span></code></pre>
+                <pre class="code-pane" id="pane-gemini-brew" role="tabpanel" aria-labelledby="tab-gemini-brew" data-platform-pane="gemini-brew" hidden><code><span class="tok-fn">brew</span> install <span class="tok-s">gemini-cli</span></code></pre>
               </article>
 
               <article class="code-window large env-window">
@@ -265,9 +265,9 @@ requires_openai_auth = true</code></pre>
                   <span>.env</span>
                   <button type="button" data-copy-target="#geminiEnv">复制</button>
                 </div>
-                <pre><code id="geminiEnv">GOOGLE_GEMINI_BASE_URL=https://api.mer3y.xyz/v1
-GEMINI_API_KEY=your-api-key
-GEMINI_MODEL=latest-model-name</code></pre>
+                <pre><code id="geminiEnv"><span class="tok-k">GOOGLE_GEMINI_BASE_URL</span><span class="tok-p">=</span><span class="tok-s">https://api.mer3y.xyz/v1</span>
+<span class="tok-k">GEMINI_API_KEY</span><span class="tok-p">=</span><span class="tok-s">your-api-key</span>
+<span class="tok-k">GEMINI_MODEL</span><span class="tok-p">=</span><span class="tok-s">latest-model-name</span></code></pre>
               </article>
             </div>
           </div>
@@ -285,20 +285,56 @@ GEMINI_MODEL=latest-model-name</code></pre>
 
           <div class="feature-grid">
             <article class="feature-card">
-              <span class="status done">已完成</span>
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" role="presentation">
+                    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+                    <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+                    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+                    <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+                  </svg>
+                </span>
+                <span class="status done">已完成</span>
+              </div>
               <h3>模型目录</h3>
               <p>Claude、GPT 与 Gemini 汇于同一视图，按场景选择模型与路由，而不必在密钥之间辗转。</p>
             </article>
             <article class="feature-card">
-              <span class="status done">已完成</span>
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" role="presentation">
+                    <path d="M4 7h3M11 7h9" />
+                    <circle cx="9" cy="7" r="2" />
+                    <path d="M4 12h9M17 12h3" />
+                    <circle cx="15" cy="12" r="2" />
+                    <path d="M4 17h1M9 17h11" />
+                    <circle cx="7" cy="17" r="2" />
+                  </svg>
+                </span>
+                <span class="status done">已完成</span>
+              </div>
               <h3>策略编排</h3>
               <p>分组、倍率、密钥与消费集中管理，从容适配不同强度的工作负载。</p>
             </article>
             <article class="feature-card">
-              <span class="status progress">开发中</span>
+              <div class="card-top">
+                <span class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" role="presentation">
+                    <path d="M12 3.8 20.5 8.4 12 13 3.5 8.4Z" />
+                    <path d="M4.5 12.4 12 16.5l7.5-4.1" />
+                    <path d="M4.5 16 12 20.1l7.5-4.1" />
+                  </svg>
+                </span>
+                <span class="status progress">开发中</span>
+              </div>
               <h3>兼容层</h3>
               <p>面向 CLI、API 与自动化工具，持续打磨更完整的 OpenAI 兼容体验。</p>
             </article>
+          </div>
+
+          <div class="features-cta">
+            <a class="cta-button" href="/sign-in" target="_top">开始使用</a>
+            <p class="cta-note">注册获取密钥，几分钟完成接入</p>
           </div>
         </div>
       </section>
